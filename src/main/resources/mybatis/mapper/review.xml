@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.shopping.ReviewDAO">
+<select id="reviewList" resultType="com.study.shopping.ReviewDTO">
+	SELECT id, score, userid, created, content FROM review
+</select>
+<!-- <select id="view" resultType="com.study.shopping.ReviewDTO">
+	SELECT id, title, content, writer, created FROM board where id=#{param1}
+</select>
+<insert id="save">
+	INSERT INTO board SET title = #{param1}, content = #{param2}, writer = #{param3}, created = sysdate()
+</insert>
+<delete id="remove">
+ 	DELETE FROM board WHERE id=#{param1}
+</delete>
+<update id="modify">
+	UPDATE board SET title = #{param2}, content = #{param3}, writer = #{param4} where id = #{param1}
+</update> -->
+</mapper>

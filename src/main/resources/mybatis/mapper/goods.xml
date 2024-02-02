@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.study.shopping.GoodsDAO">
+<!-- <select id="add" resultType="com.study.shopping.GoodsDTO">
+	SELECT userid, passwd FROM member
+</select> -->
+<insert id="goodsAdd">
+	INSERT INTO Team_Goods SET category_id = #{param1}, title = #{param2}, goods = #{param3}, price = #{param4}, stock = #{param5}, delivery = #{param6}, img = #{param7}
+</insert>
+</mapper>
