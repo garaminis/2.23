@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.shopping.ShopDAO">
+<insert id="add">
+	INSERT into member0 set user_id=#{param1} ,password=#{param2}, name=#{param3}, mobile=#{param4} ,mail=#{param5},
+				birth=#{param6}, adress=#{param7}, zipcode=#{param8}, gender=#{param9} ,join_day=sysdate() 
+</insert >
+<!-- <select id="list" resultType="com.shopping.springboot.GoodsDTO">
+	SELECT id, userid, title, goods, category, stuck ,price from Team_Goods
+</select> 
+<select id="view" resultType="com.shopping.springboot.GoodsDTO">
+	SELECT id,title, goods, category,price from Team_Goods where id=#{param1}
+</select>  --> 
+<select id="category" resultType="com.study.shopping.BoardCategoryDTO">
+	SELECT id,name from boardcategory
+</select>
+ <select id="boardList" resultType="com.study.shopping.BoardDTO">
+	SELECT id, title, content, writer,created from board0 
+</select>
+<select id="dologin" resultType="_int">
+	SELECT count(*) cnt from member0 where user_id=#{param1} and password=#{param2}
+</select>
+<select id="idchk" resultType="int">
+	<![CDATA[ SELECT count(*) FROM member0 WHERE user_id=#{param1} ]]>
+</select>
+<select id="myLoad" resultType="com.study.shopping.MemberDTO">
+	SELECT name, birth, zipcode, adress, mobile, mail from member0 where user_id=#{param1}
+</select> 
+<update id="modify">
+	UPDATE member0 set name=#{param2}, birth=#{param3}, zipcode=#{param4}, adress=#{param5}, mobile=#{param6}, mail=#{param7}
+	where user_id=#{param1}
+</update>
+<insert id="myWrite">
+	INSERT into board0 set title=#{param1} ,writer=#{param2}, content=#{param3}, category=#{param4} ,created=sysdate() 
+</insert >
+</mapper>

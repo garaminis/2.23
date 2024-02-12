@@ -20,7 +20,7 @@ public class HomeControlle {
 	@Autowired
 	private ReviewDAO rdao;
 
-	@GetMapping("/")
+	@GetMapping("/pushItem")
 	public String home() {
 		return "pushItem";
 	}
