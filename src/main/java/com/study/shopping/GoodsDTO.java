@@ -7,10 +7,12 @@ public class GoodsDTO {
 	int id;
 	String userid;
 	int category_id;
+	int category;
 	String title;
 	String goods;
 	int price;
-	int stuck;
+	int stock;
 	int delivery;
-	String img;
+	String img1;
+	String content;
 }

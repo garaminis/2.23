@@ -36,6 +36,7 @@ td tr {border:1px solid block;}
 	<tr><td colspan=2> <button id=btnAdd>등록</button></td>
 		<td colspan=2><button id=btnDel>취소</button></td>
 	</tr>
+	<tr><td>상세설명</td><td><input type=text name=goods id=content></td></tr>
 </table>
 </body>
 
@@ -50,15 +51,14 @@ if($('#title').val()==''){
 		alert("노출명을 입력해주세요.");
 		return false;
 	}
-	alert($('input[name=delivery]:checked').val())
 	$.ajax({
 		type : 'post',
 		url : '/goodsAdd',
-		data : {category_id : $('#category_id option:selected').val(), title : $('#title').val(), goods : $('#goods').val(), price : $('#price').val(), stock : $('#stock').val(), delivery : $('input[name=delivery]:checked').val(), img : $('#img').val()},
+		data : {category_id : $('#category_id option:selected').val(), title : $('#title').val(), goods : $('#goods').val(), price : $('#price').val(), stock : $('#stock').val(), delivery : $('input[name=delivery]:checked').val(), img : $('#img').val(), content : $('#content').val()},
 		dataType : 'text',
 		success : function(data){
 			if(data=='1'){
-				$('#category_id, #title, #goods, #price, #stock, #deliver, #img').val('');
+				$('#category_id, #title, #goods, #price, #stock, #deliver, #img1', '#content').val('');
 			} else {
 				alert('등록 실패');
 			}
@@ -67,7 +67,7 @@ if($('#title').val()==''){
 })
 
 .on('click','#btnDel',function(){
-	$('#category_id, #title, #goods, #price, #stock, #deliver, #img').val('');
+	$('#category_id, #title, #goods, #price, #stock, #deliver, #img1', '#content').val('');
 })
 
 </script>

@@ -6,8 +6,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +38,8 @@ public class HomeControlle {
 		String stock = req.getParameter("stock");
 		String delivery = req.getParameter("delivery");
 		String img = req.getParameter("img");
-		int n = gdao.goodsAdd(Integer.parseInt(category_id), title, goods, Integer.parseInt(price), Integer.parseInt(stock), Integer.parseInt(delivery), img); //insert
+		String content = req.getParameter("content");
+		int n = gdao.goodsAdd(Integer.parseInt(category_id), title, goods, Integer.parseInt(price), Integer.parseInt(stock), img, content); //insert
 
 	return "" + n;
 	}
@@ -85,5 +89,14 @@ public class HomeControlle {
 //	public String doPush() {
 //		return "home";
 //	}
+	
+	  @GetMapping("/itemView")
+	  public String itemView(@RequestParam("id") String id,Model model) {
+		System.out.println(id);
+		ArrayList<GoodsDTO> item = gdao.itemList(Integer.parseInt(id));
+		System.out.println(item);
+	    model.addAttribute("itemList", item);
+	    return "/itemView";
+	  }
 	
 }

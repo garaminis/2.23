@@ -27,7 +27,50 @@
        
     
       <div>
-        여기에는 각종 게시판(jsp)이 따라 붙습니다.jsp코드
+        <section class="module-small">
+          <div class="container">
+            <div class="row multi-columns-row">
+            <form>
+            <c:forEach items="${itemList}" var="itemList">
+              <div class="col-sm-6 col-md-3 col-lg-3 mt-60 mb-40">
+              
+                <div class="shop-item">
+                	<a href="/main/itemContent?item_no=${itemList.item_no}&page=${cri.page}&perPageNum=${cri.perPageNum}&catemain=${cri.catemain}&catesub=${cri.catesub}&sort=${cri.sort}">
+                  <div class="shop-item-image"><img width="10%" src="/img/${itemList.item_imgmain}" alt="Accessories Pack"/>
+                    <div class="shop-item-detail"><img src="/img/${itemList.item_imgsub}" alt="Accessories Pack"/></div>
+                  </div>
+                  <h4 class="shop-item-title font-alt">${itemList.item_name}</h4>
+                  ₩ <fmt:formatNumber pattern="###,###,###" value="${itemList.item_price}"/>
+                  </a>
+                </div>
+                
+              </div>
+              </c:forEach>
+              </form>
+   
+            </div>
+   
+                 <div class="row">
+              <div class="col-sm-12" style="text-align:center;">
+     <div class="pagination font-alt">
+  
+    <c:if test="${pageMaker.prev}">
+    <a href="/main/itemView${pageMaker.makeQuery(pageMaker.startPage - 1)}"><i class="fa fa-angle-left"></i></a>
+    </c:if> 
+
+    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
+    	<a class="active" href="/main/itemView${pageMaker.makeQuery(idx)}">${idx}</a>
+    </c:forEach>
+
+    <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
+    	<a href="/main/itemView${pageMaker.makeQuery(pageMaker.endPage + 1)}"><i class="fa fa-angle-right"></i></a>
+    </c:if> 
+
+</div>
+</div>
+</div>
+          </div>
+        </section>
       </div>
     </div>
   </main>
