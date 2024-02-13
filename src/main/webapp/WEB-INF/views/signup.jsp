@@ -147,10 +147,11 @@ $(document)
 	focusOnEmptyInput();
 })
 .on('click','#signup',function(){
+	alert($("#password").val().length)
 	if($('#userId').val() != $('#userIdCheck').val()){
 		alert("ID 중복 확인해주세요.");
 		$("#userId").focus();
-	}else if($("#password").length < 4){
+	}else if($("#password").val().length < 4){
 		alert("비밀번호가 너무 짧습니다. 4~12자");
 		$("#password").focus();
 	}else if($("#password").val() != $("#passwordCheck").val()){

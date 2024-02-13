@@ -159,7 +159,8 @@ function focusOnEmptyInput(){
 
 
 function setingData(){
-	let id = <%=(String)session.getAttribute("id")%>;
+	let id = '<%=(String)session.getAttribute("id")%>';
+	alert(id)
 	$.ajax({
 		type:'post', url:'/myLoad',
 		data:{user_id:id},

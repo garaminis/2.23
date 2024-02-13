@@ -51,7 +51,8 @@ public class ShopController {
 	public String update(HttpServletRequest req) {
 		String id = req.getParameter("user_id");
 		ArrayList<MemberDTO> data = sdao.myLoad(id);
-		
+		System.out.println("id : " + id);
+		System.out.println("data : " + data);
 		JSONArray ja = new JSONArray();
 		for(int i=0; i < data.size(); i++) {
 			JSONObject jo = new JSONObject();
@@ -63,6 +64,7 @@ public class ShopController {
 			jo.put("mail",data.get(i).mail);
 			ja.add(jo);
 		}
+		System.out.println("ja : " + ja);
 		return ja.toJSONString();
 	}
 	
