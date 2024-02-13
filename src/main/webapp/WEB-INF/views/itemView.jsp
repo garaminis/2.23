@@ -33,6 +33,7 @@
   display: table;
   clear: both;
 }
+
 </style>
 <body>
 <div id="container">
@@ -58,7 +59,7 @@
             <c:forEach items="${itemList}" var="item">
               <div class="col-sm-6 col-md-3 col-lg-3 mt-60 mb-40" style="padding-left: 10px; padding-right: 10px;">
                 <div class="shop-item">
-                  <a href="/goods/id=${item.id}">
+                  <a href="/goods?id=${item.id}">
                   <div style="text-align: center; padding: 30px;">
                     <div style="width: 100%; height: 300px; overflow: hidden; display: flex; align-items: center;">
                       <img style="width: 100%;  " src="/img/${item.img1}" alt="이미지제대로 넣어라"/>

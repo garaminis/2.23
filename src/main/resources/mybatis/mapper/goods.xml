@@ -13,4 +13,7 @@
 <select id="itemList" resultType="com.study.shopping.GoodsDTO">
 	SELECT id, img1, title, price FROM goods0 WHERE category = #{param1}
 </select>
+<select id="itemInfo" resultType="com.study.shopping.GoodsDTO">
+	SELECT * FROM goods0 WHERE id = #{param1}
+</select>
 </mapper>

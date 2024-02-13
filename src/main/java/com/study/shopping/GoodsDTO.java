@@ -9,7 +9,7 @@ public class GoodsDTO {
 	int category_id;
 	int category;
 	String title;
-	String goods;
+	String name;
 	int price;
 	int stock;
 	int delivery;

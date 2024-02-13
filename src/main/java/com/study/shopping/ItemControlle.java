@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-public class HomeControlle {
+public class ItemControlle {
 	
 	@Autowired
 	private GoodsDAO gdao; 
@@ -98,5 +98,58 @@ public class HomeControlle {
 	    model.addAttribute("itemList", item);
 	    return "/itemView";
 	  }
+	  
+	    @GetMapping("/goods")
+		public String goodsView(@RequestParam("id") String id,Model model) {
+	        System.out.println(id);
+			ArrayList<GoodsDTO> item = gdao.itemInfo(Integer.parseInt(id));
+			System.out.println(item);
+		    model.addAttribute("itemInfo", item);
+		    return "/goods";
+		  }
 	
+		@GetMapping("/announ")
+		public String getAnnoun() {
+			return "announ";
+		}
+		@GetMapping("/tkorder")
+		public String getTKOrder(HttpServletRequest req,Model model) {
+			//goods.jps에서 받은 이미지 상품제목 갯수 가격받아오기
+			String img = req.getParameter("img");
+			model.addAttribute("img",img);
+			String goodsName = req.getParameter("goodsName");
+			model.addAttribute("goodsName",goodsName);
+			String goodsSend = req.getParameter("goodsSend");
+			model.addAttribute("goodsSend",goodsSend);
+			int result = Integer.parseInt(req.getParameter("result"));
+			model.addAttribute("result",result);
+			int goodsPrice = result*Integer.parseInt(req.getParameter("goodsPrice"));
+			model.addAttribute("goodsPrice",goodsPrice);
+			
+			//임의로 정한 사람정보
+			String name ="김먹태";
+			model.addAttribute("name",name);
+			String mail ="asdf@naver.com";
+			model.addAttribute("mail",mail);
+			String mobile ="010-6455-7979";
+			model.addAttribute("mobile",mobile);
+			String adress ="경기도 어딘가";
+			model.addAttribute("adress",adress);
+			return "/order";
+		}
+		@GetMapping("/order")
+		public String getOrder(Model model) {
+			return "order";
+		}
+		@GetMapping("/orderEnd")
+		public String getOrderEnd() {
+			return "orderEnd";
+		}
+		
+
+	    
+//		@GetMapping("/goods")
+//		public String goods() {
+//			return "goods";
+//		}
 }

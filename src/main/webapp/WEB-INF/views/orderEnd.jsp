@@ -18,18 +18,16 @@
   	<%@ include file="include/nav.jsp" %>
   </nav>
   
- <main>
-    <div class="mainContent">
-      <div id="middle_box">
-        <div id="middle_top">
-          <h1 class="middle_top_title">home</h1>
-          <hr class="middle_top_hr">
-       
+  <main id="main">
+    <div id="mainContent"> 
+    각 html바디부분 여기서부터 붙여넣으시면 됩니다.body태그말고요
+        <div style="width: 100%; text-align: center; font-size: 40px;">
+        <a href="">홈으로</a>
+        <a href="">주문내역보기</a>
     </div>
- 
-      </div>
-    </div>
+	</div>
   </main>
+  
   <footer id="footer">
   	<%@ include file="include/footer.jsp" %>
   </footer>
