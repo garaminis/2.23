@@ -15,4 +15,5 @@ public class GoodsDTO {
 	int delivery;
 	String img1;
 	String content;
+	int pay;
 }

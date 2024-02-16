@@ -5,18 +5,23 @@
 	
 <mapper namespace="com.study.shopping.ReviewDAO">
 <select id="reviewList" resultType="com.study.shopping.ReviewDTO">
-	SELECT id, score, userid, created, content FROM review
+	SELECT a.id id, rating, b.user_id user_id, created, content FROM review a, member0 b WHERE a.member_id = b.id and a.goods_id = #{param1};
 </select>
-<!-- <select id="view" resultType="com.study.shopping.ReviewDTO">
-	SELECT id, title, content, writer, created FROM board where id=#{param1}
+<select id="qnaList" resultType="com.study.shopping.ReviewDTO">
+	SELECT a.id id, a.member_id member_id, a.content content, a.writer qwriter, a.created qusdate, b.content answer, b.writer awriter, b.created ansdate, COALESCE(c.id, 2) state, name FROM qna a LEFT JOIN qnaanswer b ON a.id = b.qna_id LEFT JOIN answerstate c ON a.answer = c.id WHERE a.goods_id = #{param1};
 </select>
-<insert id="save">
+<insert id="qnaSave">
+	INSERT into qnaanswer set member_id = #{param2}, goods_id=#{param3}, qna_id=#{param4}, content=#{param5}
+</insert >
+<update id="qnaUpdate">
+	UPDATE qna SET answer = '2' where id = #{param1}
+</update>
+
+<!-- <insert id="save">
 	INSERT INTO board SET title = #{param1}, content = #{param2}, writer = #{param3}, created = sysdate()
 </insert>
 <delete id="remove">
  	DELETE FROM board WHERE id=#{param1}
-</delete>
-<update id="modify">
-	UPDATE board SET title = #{param2}, content = #{param3}, writer = #{param4} where id = #{param1}
-</update> -->
+</delete> -->
+
 </mapper>

@@ -33,4 +33,8 @@
 <insert id="myWrite">
 	INSERT into board0 set title=#{param1} ,writer=#{param2}, content=#{param3}, category=#{param4} ,created=sysdate() 
 </insert >
+<select id="orderData" resultType="com.study.shopping.MemberDTO">
+	SELECT name, mail, mobile, adress from member0 where user_id=#{param1}
+</select>
+
 </mapper>

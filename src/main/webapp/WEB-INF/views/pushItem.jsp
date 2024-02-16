@@ -58,7 +58,7 @@ if($('#title').val()==''){
 		dataType : 'text',
 		success : function(data){
 			if(data=='1'){
-				$('#category_id, #title, #goods, #price, #stock, #deliver, #img1', '#content').val('');
+				$('#category_id, #title, #goods, #price, #stock, #delivery, #img', '#content').val('');
 			} else {
 				alert('등록 실패');
 			}
@@ -67,7 +67,7 @@ if($('#title').val()==''){
 })
 
 .on('click','#btnDel',function(){
-	$('#category_id, #title, #goods, #price, #stock, #deliver, #img1', '#content').val('');
+	$('#category_id, #title, #goods, #price, #stock, #delivery, #img', '#content').val('');
 })
 
 </script>

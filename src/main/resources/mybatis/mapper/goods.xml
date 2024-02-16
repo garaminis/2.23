@@ -11,9 +11,9 @@
 	INSERT INTO goods0 SET category = #{param1}, title = #{param2}, name = #{param3}, price = #{param4}, stock = #{param5}, img1 = #{param6}, content = #{param7}
 </insert>
 <select id="itemList" resultType="com.study.shopping.GoodsDTO">
-	SELECT id, img1, title, price FROM goods0 WHERE category = #{param1}
+	SELECT b.name name, a.id id, img1, title, price FROM goods0 a, goodscategory b WHERE a.category = #{param1} and b.id = #{param1} limit #{param2}, #{param3};
 </select>
 <select id="itemInfo" resultType="com.study.shopping.GoodsDTO">
-	SELECT * FROM goods0 WHERE id = #{param1}
+	SELECT a.*, b.pay pay FROM goods0 a, delivery b WHERE a.id = #{param1} and a.delpay = b.id
 </select>
 </mapper>

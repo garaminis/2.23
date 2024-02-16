@@ -183,6 +183,26 @@ public class ShopController {
 		return ""+n;
 	}
 	
+	@PostMapping("/orderData")
+	@ResponseBody
+	public String doOrderData(HttpServletRequest req) {
+		String id = req.getParameter("user_id");
+		ArrayList<MemberDTO> order = sdao.orderData(id);
+		System.out.println("id : " + id);
+		System.out.println("order : " + order);
+		JSONArray ja = new JSONArray();
+		for(int i=0; i < order.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("name",order.get(i).name);
+			jo.put("mail",order.get(i).mail);
+			jo.put("mobile",order.get(i).mobile);
+			jo.put("adress",order.get(i).adress);
+			ja.add(jo);
+		}
+		System.out.println("ja : " + ja);
+		return ja.toJSONString();
+	}
+	
 //	@PostMapping("/myLoad")
 //	@ResponseBody
 //	public String  doMyLoad (HttpServletRequest req) {

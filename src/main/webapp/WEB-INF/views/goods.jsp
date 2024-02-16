@@ -6,8 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>홈</title>
+<title>상세페이지</title>
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-latest.js"></script>
 </head>
 <style>
     html{
@@ -48,229 +49,272 @@ table {
   <nav id="nav">
   	<%@ include file="include/nav.jsp" %>
   </nav>
-<c:forEach items="${itemInfo}" var="item">
+  
+
 <c:set var="imgSrc" value="${item.img1}" />
-<main id="main">
+  <main id="main">
     <div id="mainContent">
-        <main>
-        <div style="margin-top: 20px; text-align: center; ">
-            <div class="img-box" style="display: inline-block;">
-                <img class="M_img"style="width: 280px;" src="/img/${item.img1}" alt="">
-                <br>
-                <div>
-                <img class="S_img1" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${item.img1}" alt="">
-                <img class="S_img2" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${item.img1}" alt="">
-                <img class="S_img3" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${item.img1}" alt="">
-                <img class="S_img4" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${item.img1}" alt="">
-                </div>
-            </div>
-            <div style="display: inline-block;">
-                <table style="font-size: 30px;display: inline-block;">
-                    <tr>
-                        <td colspan="2" class="goodsName">${item.title}</td>
-                    </tr>
-                    <tr>
-                        <td>판매가</td>
-                        <td class="goodsPrice">${item.price}</td>
-                    </tr>
-                    <tr>
-                        <td>배송비</td>
-                        <td class="goodsSend">3000원</td>
-                    </tr>
-                    <tr>
-                        <td>수량</td>
-                        <td><input type="text" class="result" readonly value="1"style="text-align: right;width: 80px;height: 30px;font-size: 30px;"><input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+"><input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-"></td>
-                    </tr>
-                </table>
-            </div>
-            <div style="text-align: right;">
-                <input type="button" style="width: 120px;height: 30px;" value="장바구니에담기">
-                <input type="button" style="width: 120px;height: 30px;" onclick=Juuu(); value="주문하기">
-            </div>
+      <div style="margin-top: 20px; text-align: center; ">
+        <div class="img-box" style="display: inline-block;">
+          <img class="M_img"style="width: 280px;" src="/img/${itemInfo[0].img1}" alt=""><br>
+          <div>
+            <img class="S_img1" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+            <img class="S_img2" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+            <img class="S_img3" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+            <img class="S_img4" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+            <img class="S_img5" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+          </div>
         </div>
-        <div id="scrollbar"style="background-color: white; text-align: center; position: sticky; top: 0px; right: 300px;">
-            <div>
-                <div style="width: 200px; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#mainDIS" class="scroll_bar">상세정보</a></div>
-                <div style="width: 200px; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#coment" class="scroll_bar">상품평</a></div>
-                <div style="width: 200px; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#QnA" class="scroll_bar">Q&A</a></div>
-                <div style="width: 200px; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#먹태" class="scroll_bar">먹태</a></div>
-            </div>
+        <div style="display: inline-block;">
+          <table style="font-size: 30px;display: inline-block;">
+            <tr><td colspan="2" class="goodsName">${itemInfo[0].title}</td></tr>
+            <tr>
+              <td>판매가</td>
+              <td class="goodsPrice">
+                ${itemInfo[0].price}
+                <input type="hidden" style="display:none" id="goodsNumber" value="${itemInfo[0].id}">
+              </td>
+            </tr>
+            <tr>
+              <td>배송비</td>
+              <td class="goodsSend">${itemInfo[0].pay}</td>
+            </tr>
+            <tr>
+              <td>수량</td>
+              <td>
+                <input type="text" class="result" readonly value="1"style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
+                <input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+">
+                <input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-">
+              </td>
+            </tr>
+          </table>
         </div>
-        <div id="mainDIS"><!--상품상세설명-->
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-            <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
-
+        <div style="text-align: right;">
+          <input type="button" style="width: 120px;height: 30px;" onclick=addCart(); value="장바구니에담기">
+          <input type="button" style="width: 120px;height: 30px;" onclick=Juuu(); value="주문하기">
         </div>
-        <div id="coment"><!--상품평-->
-            <h1 style="text-align: center;font-style: initial;">상품평</h1>
-    <div>
-        <table>
-          <!-- 여기는 테이블의 제목부분입니다. -->
-          <tr>
-            <th>번호</th>
-            <th>별점</th>
-            <th>내용</th>
-            <th>구매자</th>
-            <th>작성일</th>
-            <th>추천수</th>
-          </tr>
-          <!-- 여기는 테이블의 내용부분입니다.. -->
-          <tr>
-            <td><input type="text" readonly></td>
-            <td>
-              5★
-            </td>
-            <td class="Re1" onclick="togl(this)" style="cursor: pointer;">
-              내용은클릭하게 만들었습니다
-            </td>
-            <td>
-              민수
-            </td>
-            <td>
-              2024/02/02
-            </td>
-            <td>
-              답변등록
-            </td>
-          </tr>
-          <tr class="Re1" hidden>
-            <td colspan="2" >
-              <img src="https://m.sulanjoo.com/web/product/big/sulanjoo_1789.jpg" style="height: 120px;">
-            </td>
-            <td colspan="2">어릴적 아버지가 자주사다주시던 뻥튀기가 생각이났어요</td>
-            <td>2024/02/14</td>
-            <td>답변완료</td>
-          </tr>
-        </table>
       </div>
+      <div id="scrollbar"style="background-color: white; text-align: center; position: sticky; top: 0px; right: 300px;">
+        <div>
+          <div style="width: 20%; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#mainDIS" class="scroll_bar">상세정보</a></div>
+          <div style="width: 20%; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#coment" class="scroll_bar">상품평</a></div>
+          <div style="width: 20%; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#QnA" class="scroll_bar">Q&A</a></div>
+          <div style="width: 20%; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#change" class="scroll_bar">교환/반품안내</a></div>
         </div>
-        <div id="QnA"><!--QnA-->
-            <h1 style="text-align: center;font-style: initial;">Q&A</h1>
-                <div>
-        <table>
-          <tr>
-            <th>번호</th>
-            <th>문의종류</th>
-            <th>내용</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>상태</th>
-          </tr>
-          <tr>
-            <td><input type="text" readonly></td>
-            <td>
-              사기
-            </td>
-            <td class="Moon1" onclick="togl(this)" style="cursor: pointer;">
-              내용은클릭하게 만들었습니다
-            </td>
-            <td>
-              민수
-            </td>
-            <td>
-              2024/02/02
-            </td>
-            <td>
-              답변등록
-            </td>
-          </tr>
-          <tr class="Moon1" hidden >
-            <td colspan="4" >
-              Q.내용은 클릭하게 만들었습니다<br>
-              A.안녕하세요 고객님 문의내용 잘 읽었습니다 감사합니다<br>
-            </td>
-            <td>2024/02/14</td>
-            <td>답변완료</td>
-          </tr>
-          
-
-          <tr>
-            <td><input type="text" readonly></td>
-            <td>
-              사기
-            </td>
-            <td class="Moon2" onclick="togl(this)" style="cursor: pointer;">
-              내용은클릭하게 만들었습니다
-            </td>
-            <td>
-              민수
-            </td>
-            <td>
-              2024/02/02
-            </td>
-            <td>
-              답변등록
-            </td>
-          </tr>
-          <tr class="Moon2" hidden >
-            <td colspan="4" >
-              Q.내용은 클릭하게 만들었습니다<br>
-              A.안녕하세요 고객님 문의내용 잘 읽었습니다 감사합니다<br>
-            </td>
-            <td>2024/02/14</td>
-            <td>답변완료</td>
-          </tr>
-        </table>
       </div>
+      <div id="mainDIS"><!--상품상세설명-->
+        ${itemInfo[0].content}
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+        <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
+      </div>
+      <div id="coment"><!--상품평-->
+        <h1 style="text-align: left;font-style: initial;">상품평</h1>
+        <hr style="width:90%">
+        <div>
+          <table id="tblReview">
+<!--             <tr><td colspan="2">평점</td></tr>
+            <tr><td colspan="2">작성자 / 작성일시</td></tr>
+            <tr><td class="Re1" onclick="togl(this)" style="cursor: pointer;" colspan="2">내용</td></tr>
+            <tr class="Re1" hidden>
+              <td>여백</td>
+              <td>관리자</td>
+            </tr> -->
+          </table>
         </div>
-        <div id="먹태"><!--미정-->
-            <h1 style="text-align: center;font-style: initial;">먹태야먹태</h1>
+      </div>
+      <div id="QnA"><!--QnA-->
+        <h1 style="text-align: left;font-style: initial;">QnA</h1>
+        <hr style="width:90%">
+        <div>
+          <table id="tblQna">
+            <tr>
+              <th>상태</th>
+              <th>내용</th>
+              <th>작성자</th>
+              <th>작성일</th>
+            </tr>
+<!--             <tr class="Moon1" onclick="togl(this)" style="cursor: pointer;">
+              <td>상태</td>
+              <td>내용</td>
+              <td>작성자</td>
+              <td>작성일</td>
+            </tr>
+            <tr class="Moon1" hidden >
+              <td></td>
+              <td>
+                 Q. 내용<br>
+                 <hr>
+                 A. 답변<br>
+              </td>
+              <td>작성자</td>
+              <td>작성일자</td>
+            </tr> -->
+
+          </table>
         </div>
+      </div>
+      <div id="change">
+        <h1 style="text-align: left;font-style: initial;">교환/반품 안내</h1>
+        <hr style="width:90%">
+      </div>
     </main>   
-</div>
-  </main>
-</c:forEach>
-  <footer id="footer">
-  	<%@ include file="include/footer.jsp" %>
-  </footer>
+  </div>
+
+
+    <footer id="footer">
+      <%@ include file="include/footer.jsp" %>
+    </footer>
 </div>
 </body>
-<script src="https://code.jquery.com/jquery-latest.js"></script>
+
 <script>
 $(document).ready(function() {
-    $("#Qone").click(function() {
-        $("#Moon").toggle();
-    });
+	
+
+    
     let imgSrc = '<%= request.getAttribute("imgSrc") %>';
+    getReviwe();
+    getQna();
 });
-function togl(TKclass){
-  var cla1 = TKclass.className;
-  var cla2 = document.getElementsByClassName(cla1)[1];
-  $(cla2).toggle();
-};
-    function count(type)  {
-        const resultElement = $('.result');
-        let number = resultElement.val();
-        if(type === 'plus') {
-            number = parseInt(number) + 1;
-        }else if(type === 'minus')  {
-            number = parseInt(number) - 1;
-            if(number<1){return false;}
-        }
-        resultElement.val(number);
-    } /*+ - 버튼눌러 수량을 나타내는 스크립트*/
+let admin = '<%=(String)session.getAttribute("id")%>';
 
-    function onIMG(){
-        var src = $(event.target).attr('src');
-        $('.M_img').attr('src',src);
-    } /*작은 그림에 마우스 올렸을떄 올린 그림의 링크를 큰그림 링크에 붙여넣는 스크립트*/
-    function offIMG(){
-        $('.M_img').attr('src','/img/' + imgSrc);
-    } /*마우스가 그림에서 떠날때 설정한 기본상품의 그림 초반그림 설정해줘야함*/
-    function Juuu(){
-    	document.location='/tkorder?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('.result').val();
-    }/**/
-    function Janggg(){
+$(document).on('click', '.btnQna', function() {
+	
+    let i = $(this).data('i');
+    let content = $('#setAnswer' + i).val();
+    let qna_id = $(this).data('qna_id');
+    let member_name = $(this).data('member_name');
+    let member_id = $(this).data('member_id');
+    alert(i)
+    $.ajax({
+    	type:'post', url:'/setAnswer',
+    	data:{id:$('#goodsNumber').val(), content : content, qna_id : qna_id, member_name : member_name, member_id : member_id}, 
+    	dataType:'text',
+    	success:function(data){
+    			$('#tblQna tr.Re1').remove();
+    			getQna();
+    	}
+    })
+})
+.on('click','.notyet',function(){
+	if($(this).find('td:eq(0)').text() == '미답변' && admin != 'admin'){
+       return false;
+	}
+	$(this).closest('tr').next('.Re1').toggle();
+})
 
-    }
+function toglReview(TKclass) {
+    $(TKclass).closest('tr').next('.Re1').toggle();
+}
+
+function count(type)  {
+  const resultElement = $('.result');
+  let number = resultElement.val();
+  if(type === 'plus') {
+    number = parseInt(number) + 1;
+  }else if(type === 'minus')  {
+    number = parseInt(number) - 1;
+    if(number<1){return false;}
+  }
+  resultElement.val(number);
+} /*+ - 버튼눌러 수량을 나타내는 스크립트*/
+
+function onIMG(){
+  let src = $(event.target).attr('src');
+  $('.M_img').attr('src',src);
+} /*작은 그림에 마우스 올렸을떄 올린 그림의 링크를 큰그림 링크에 붙여넣는 스크립트*/
+
+function offIMG(){
+  $('.M_img').attr('src','/img/' + imgSrc);
+} /*마우스가 그림에서 떠날때 설정한 기본상품의 그림 초반그림 설정해줘야함*/
+
+function Juuu(){
+  document.location='/tkorder?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('.result').val();
+}/**/
+
+function addCart(){
+  document.location='/cart?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('.result').val();
+}/**/
+
+//리뷰 불러오는 함수
+function getReviwe() {
+	$.ajax({
+		type:'post', url:'/getReview',
+		data:{id:$('#goodsNumber').val()},
+		dataType:'json',
+		success:function(data){
+			let str = "";
+			for(let i = 0; i < data.length; i++) {
+	            str += '<tr><td colspan="2">' + data[i].rating + '</td></tr>'
+	            + '<tr><td colspan="2">' + data[i].user_id + '/' + data[i].created +'</td></tr>'
+	            + '<tr><td class="Re1" onclick="toglReview(this)" style="cursor: pointer;" colspan="2">' + data[i].content +'</td></tr>'
+	            + '<tr class="Re1" hidden>'
+	            + '  <td>여백</td><td>관리자 답변</td></tr>'
+			}
+			$('#tblReview').append(str)
+		}
+	})
+}
+
+function getQna() {
+	$.ajax({
+		type:'post', url:'/getQna',
+		data:{id:$('#goodsNumber').val()},
+		dataType:'json',
+		success:function(data){
+			let str = "";
+			for(let i = 0; i < data.length; i++) {
+				let qna_id = data[i].id;
+				let member_name = data[i].qwriter;
+				let member_id = data[i].member_id;
+	            //str += '<tr class="Re1" onclick="toglQna(this)" style="cursor: pointer;">'
+	            str += '<tr class="Re1 notyet"  style="cursor: pointer;">'
+	            +  '<td>' + data[i].name +'</td>'
+	            +  '<td>'+ data[i].content+ '</td>'
+	            +  '<td>'+ member_name +'</td>'
+	            +  '<td>' + data[i].qusdate +'</td></tr>'
+	            
+	            if(data[i].state == '1' && admin == 'admin') {
+	            		str+=  '<tr class="Re1" hidden>'
+			            +  '<td colspan="3"><textarea rows="4" id="setAnswer' + i + '"></textarea></td>'
+			            + '<td><button class="btnQna"data-i="' + i + '" data-qna_id="' + qna_id + '" data-member_name="' + member_name + '" data-member_id="' + member_id + '">등록하기</button></td></tr>'	
+			            
+
+	            } else {
+		            str+=  '<tr class="Re1" hidden>'
+		            +  '<td></td>'
+		            +  '<td>'+ data[i].content +'<br><hr>' + data[i].answer+ '<br></td>'
+		            +  '<td>' + data[i].awriter + '</td>'
+		            +  '<td>' + data[i].ansdate + '</td></tr>'	
+	            }
+	            
+			}
+
+
+			$('#tblQna').append(str)
+		}
+	})
+}
+
+
+//QnA불러오는 함수
 </script>
 </html>
