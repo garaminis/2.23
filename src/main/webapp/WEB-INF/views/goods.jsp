@@ -295,9 +295,7 @@ function getQna() {
 	            if(data[i].state == '1' && admin == 'admin') {
 	            		str+=  '<tr class="Re1" hidden>'
 			            +  '<td colspan="3"><textarea rows="4" id="setAnswer' + i + '"></textarea></td>'
-			            + '<td><button class="btnQna"data-i="' + i + '" data-qna_id="' + qna_id + '" data-member_name="' + member_name + '" data-member_id="' + member_id + '">등록하기</button></td></tr>'	
-			            
-
+			            + '<td><button class="btnQna"data-i="' + i + '" data-qna_id="' + qna_id + '" data-member_name="' + member_name + '" data-member_id="' + member_id + '">등록하기</button></td></tr>'
 	            } else {
 		            str+=  '<tr class="Re1" hidden>'
 		            +  '<td></td>'
@@ -305,10 +303,7 @@ function getQna() {
 		            +  '<td>' + data[i].awriter + '</td>'
 		            +  '<td>' + data[i].ansdate + '</td></tr>'	
 	            }
-	            
 			}
-
-
 			$('#tblQna').append(str)
 		}
 	})
