@@ -105,13 +105,13 @@
 	     </tr>
 	     <tr>
 	       <td rowspan="3">주소 </td>
-	       <td> <input type="number" id="zipcode" placeholder="우편번호">&nbsp;<button>주소검색</button></td>
+	       <td> <input type="number" id="zipcode"   placeholder="우편번호">&nbsp;<button id=ADRshow>주소검색</button></td>
 	     </tr>
 	     <tr>
 	       <td><input type="text" id="adress"  placeholder="기본주소"></td>
 	     </tr>
 	     <tr>
-	       <td><input type="text" id="adress2"  placeholder="상세주소(아직 미완성)"></td>
+	       <td><input type="text"  id="ADR_SangSoo"  placeholder="상세주소"></td>
 	     </tr>
 	     <tr>
 	       <td>핸드폰 번호 </td>
@@ -180,7 +180,9 @@ $(document)
 .on('click','#cancel',function(){
 	location.href="/";
 })
-
+.on('click','#ADRshow',function(){
+	ADRshow();
+})
 .on('keyup','#userId',function(){
 	idcheck();
 })
@@ -192,11 +194,13 @@ $(document)
 
 
 function singup(){
+	console.log($('#ADR_SangSoo').val());
 	$.ajax({
 		type:'post', url:'/doSignup',
 		data:{userId:$('#userId').val(),psw:$('#password').val(),name:$('#userName').val(),mobile:$('#mobile').val(),
 		  		mail:$('#mail').val(),birth:$('#birth').val(),
-			 	  adress:$('#adress').val(),zipcode:$('#zipcode').val(),gender:$('input[name=gender]:checked').val()}, 
+			 	  adress:$('#adress').val(),zipcode:$('#zipcode').val(),gender:$('input[name=gender]:checked').val(),
+			 	  sAdress:$('#ADR_SangSoo').val()}, 
 		dataType:'text',
 		success:function(data){
 			 if(data == 1){
@@ -206,7 +210,7 @@ function singup(){
 				 $('#userId,#password,#passwordCheck,#userName,#birth,#zipcode,#address,#mobile,#mail').val('');
 			 }
 		}
-	})
+	})  
 }
 
 
@@ -233,7 +237,7 @@ function idcheck(){
 		  }
 			$('#tblSignup tr:eq(0) td:eq(2)').remove(); 
 		}
-	})
+	})  
 }
 
 function pswcheck(){
@@ -254,6 +258,23 @@ function focusOnEmptyInput(){
 	      }
 	 });
 }
+
+function ADRshow(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                console.log(data);
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var jibunAddr = data.jibunAddress; // 지번 주소 변수
+                $('#zipcode').val(data.zonecode) // 우편번호 넣는코드
+                if(roadAddr!==''){              
+                   $('#adress').val(roadAddr) 
+                }else if(jibunAddr!==''){
+                    $('#adress').val(jibunAddr)  //도로명이 없을경우 지번을 넣는다
+                }
+            }
+        }).open();
+    }
 </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!-- 다음카카오 주소API 스크립트 -->
 
 </html>

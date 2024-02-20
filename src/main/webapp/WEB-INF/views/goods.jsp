@@ -186,7 +186,7 @@ $(document).on('click', '.btnQna', function() {
     })
 })
 .on('click','.notyet',function(){
-	if($(this).find('td:eq(0)').text() == '미답변' && id != 'himedia'){
+	if($(this).find('td:eq(0)').text() == '미답변' && id != 'admin'){
        return false;
 	}
 	$(this).closest('tr').next('.Re1').toggle();
@@ -289,7 +289,7 @@ function getQna() {
 	            +  '<td>'+ member_name +'</td>'
 	            +  '<td>' + data[i].qusdate +'</td></tr>'
 	            
-	            if(data[i].state == '1' && id == 'himedia') {
+	            if(data[i].state == '1' && id == 'admin') {
 	            		str+=  '<tr class="Re1" hidden>'
 			            +  '<td colspan="3"><textarea rows="4" id="setAnswer' + i + '"></textarea></td>'
 			            + '<td><button class="btnQna"data-i="' + i + '" data-qna_id="' + qna_id + '" data-member_name="' + member_name + '" data-member_id="' + member_id + '">등록하기</button></td></tr>'

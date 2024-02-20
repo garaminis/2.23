@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class MemberDTO {
+	int id;
 	String user_id;
 	String password;
 	String name;
@@ -12,9 +13,9 @@ public class MemberDTO {
 	String birth;
 	String gender;
 	String join_day;
-//	String out_day;
 	String zipcode;
 	String adress;
-//	int member_rank;
+	String sAdress;
+	int member_rank;
 
 }

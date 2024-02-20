@@ -38,7 +38,7 @@
         <div id="middle_bottom">
           <div class="middleMenu"><a href="/notice"><img src="/img/notice.jpg" id=""></a></div>
           <div class="middleMenu"><a href="/Qna"><img src="/img/QnA.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/Fna"><img src="/img/FAQ.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/faq"><img src="/img/FAQ.jpg" id=""></a></div>
           <div class="middleMenu"><a href="/myAbout"><img src="/img/myQnA.jpg" id=""></a></div>
           <div class="middleMenu"><a href="/customer"><img src="/img/wating.jpg" id=""></a></div>
         </div>

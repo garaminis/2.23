@@ -107,7 +107,7 @@ button:hover {
 <script>
 $(document)
 .ready(function(){
-	focusOnEmptyInput();
+	$('#loginId').focus();
 })
 .on('click','#btnLogin',function(){
   $.ajax({
@@ -119,10 +119,14 @@ $(document)
 			if(data=='1'){
 				$('#loginId,#password').val('');
 				location.href="/";
+			} else if(data=='2'){
+				alert("관리자로그인 성공");
+				$('#loginId,#password').val('');
+				location.href="/";
 			}else{
 				$('#error').show();
 				$('#loginId,#password').val('');
-				focusOnEmptyInput();
+				$('#loginId').focus();
 			}
 		}
 	}) 
@@ -133,14 +137,5 @@ $(document)
 	location.href="/signup";
 }) 
 
-//굳이 함수까지 써야할까요? 성공하건 틀리건 각val은 전부 지워지고 로그인에 focus...
-function focusOnEmptyInput(){
-  $('#tblLogin input').each(function() {
-	  if ($(this).val() === '') {
-	    $(this).focus();
-	    return false; 
-	  }
-	});
-}
 </script>
 </html>

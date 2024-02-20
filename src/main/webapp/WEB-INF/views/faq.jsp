@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Notice</title>
+<title>자주묻는질문</title>
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 
 <style>
@@ -70,7 +70,7 @@
 	.announcement button:hover {
 	    background-color: #0056b3;
 	}
-	.announcement {
+		.announcement {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -97,7 +97,7 @@
   
 
 <main>
-	 <h1 class="middle_top_title">공지사항</h1>
+	 <h1 class="middle_top_title">자주묻는질문</h1>
 	 <hr class="middle_top_hr">
 
 <c:forEach items="${boardlist}" var="board">  
@@ -163,16 +163,14 @@ $(document)
 
 .on('click','#btnbDelete',function(){
 	let id=$(this).parent().find('input#uniq').val();
-	let category=$(this).parent().find('input#category').val();
-	
 	$.ajax({
 		type:'post', url:'/boardDelete',
-		data:{uniq:id,category:category},
+		data:{uniq:id},
 		dataType:'text',
 		success:function(data){
-			if(data==1||data==2){
+			if(data==1){
 				alert('성공하였습니다')
-				location.href="/notice";
+				location.href="/Fna";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -180,25 +178,24 @@ $(document)
 	})	
 })
 .on('click','#btnbModify',function(){
-	let title=$(this).parent().find('input#title').val();
-	let content=$(this).parent().find('textarea#content').val();
 	let id=$(this).parent().find('input#uniq').val();
-	let category=$(this).parent().find('input#category').val();
-	
+	let content=$(this).parent().find('textarea#content').val();
+	let title=$(this).parent().find('input#title').val();
 	$.ajax({
 		type:'post', url:'/boardModify',
-		data:{title:title,content:content,uniq:id,category:category},//$('#uniq').val()}, 
+		data:{title:title,content:content,uniq:id},//$('#uniq').val()}, 
 		dataType:'text',
 		success:function(data){
-			if(data==1 || data==2){
+			if(data==1){
 				alert('성공하였습니다')
-				location.href="/notice";
+				location.href="/Fna";
 			} else{
 				alert('실패하였습니다')
 			}
 		}
-	}) 
-}) 
+	})
+})
+
 function category(){
 	$.ajax({
 		type:'Get', url:'/catagoryboard', data:{}, dataType:'json',

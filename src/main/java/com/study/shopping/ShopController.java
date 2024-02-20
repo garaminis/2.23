@@ -45,6 +45,10 @@ public class ShopController {
 	public String myUpdate() {
 		return "myUpdate";
 	}
+	@GetMapping("/write")
+	public String write() {
+		return "write";
+	}
 	
 	@PostMapping("/myLoad")
 	@ResponseBody
@@ -67,38 +71,45 @@ public class ShopController {
 		System.out.println("ja : " + ja);
 		return ja.toJSONString();
 	}
-	
 	@GetMapping("/customer")
 	public String customer() {
 		return "customer";
 	}
 	@GetMapping("/notice") // 게시판리스트(페이지아직)
 	public String doList(Model model) {
-		ArrayList<BoardDTO> boards= sdao.boardList();
+		int category=1;
+		ArrayList<BoardDTO> boards= sdao.boardList(category);
 		model.addAttribute("boardlist",boards);
 		return "notice";
 	}
-	@GetMapping("/write")
-	public String write() {
-		return "write";
+	@GetMapping("/faq") // 게시판리스트(페이지아직)
+	public String doFna(Model model) {
+		int category=2;
+		ArrayList<BoardDTO> boards= sdao.boardList(category);
+		model.addAttribute("boardlist",boards);
+		return "faq";
 	}
-//	@GetMapping("/boardList")
-//	public String doList(Model model) {
-//		ArrayList<board0DTO> boards= sdao.boardList();
-//		System.out.println(boards);
-//		model.addAttribute("boardlist",boards);
-//		System.out.println(boards);
-////		ArrayList<GoodsDTO> goods=sdao.list();
-////		model.addAttribute("goods",goods);
-//		return "notice";
-//	}
-//	@GetMapping("/product")
-//	public String doProduct(@RequestParam("id") int id, Model model) {
-//		GoodsDTO gooddto= sdao.view(id);
-//		model.addAttribute("goods",gooddto);
-//		return "product";
-//	}
+	@GetMapping("/Qna")
+	public String Qna(Model model) {
+		int category=3;
+		ArrayList<directQnADTO> directQnA = sdao.directQnAList(category);
+		model.addAttribute("directQnAlist", directQnA);
+		return "Qna";
+	}
+	@GetMapping("/myAbout")
+	public String myAbout(Model model) {
+	    int[] categories = {4, 5, 6, 7, 8};
 
+	    // 모든 카테고리에 대한 directQnAList 가져오기
+	    ArrayList<directQnADTO> DirectQnA = new ArrayList<>();
+	    for (int category : categories) {
+	        ArrayList<directQnADTO> directQnA = sdao.directQnAList(category);
+	        DirectQnA.addAll(directQnA);
+	    }
+	    model.addAttribute("directQnAlist", DirectQnA);     
+	    return "myAbout";
+	}
+	
 	@PostMapping("/doSignup") //회원가입
 	@ResponseBody
 	public String goSignup(HttpServletRequest req) {
@@ -111,22 +122,29 @@ public class ShopController {
 		String adress=req.getParameter("adress");
 		String zipcode=req.getParameter("zipcode");
 		String gender=req.getParameter("gender");
+		String sAdress=req.getParameter("sAdress");
 		
-		int n=sdao.add(userId,psw,name,mobile,mail,birth,adress,zipcode,gender);
+		int n=sdao.add(userId,psw,name,mobile,mail,birth,adress,zipcode,gender,sAdress);
 		return ""+n;
 	}
+	
 	@PostMapping("/dologin") //로그인
 	@ResponseBody
-	public String doLogin (HttpServletRequest req) {
+	public String doLogin(HttpServletRequest req) {
 		String id=req.getParameter("loginId");
 		String psw=req.getParameter("passwd");
-		int n = sdao.dologin(id,psw);
-		if(n==1) {
-			HttpSession sess= req.getSession(); //세션 객체를 얻고 sess변수에 저장
+		HttpSession sess= req.getSession(); ////세션 객체를 얻고(꺼내고)  sess변수에 저장
+		int ad= sdao.adlogin(id,psw);
+		if(ad==0) {
+			int n=sdao.dologin(id, psw);
 			sess.setAttribute("id",id);
+			return ""+n;	
 		}
-		return""+n;
+		sess.setAttribute("id",id);
+		sess.setAttribute("admin",id);
+		return "2";	
 	}
+	
 	@PostMapping("/logout") //로그아웃
 	@ResponseBody
 	public String dologout(HttpServletRequest req) {
@@ -134,6 +152,7 @@ public class ShopController {
 		sess.invalidate();
 		return "1" ;
 	}
+	
 	@PostMapping("/idcheck") //아이디 중복체크
 	@ResponseBody
 	public String doIdcheck(HttpServletRequest req) {
@@ -141,6 +160,7 @@ public class ShopController {
 		int n= sdao.idchk(userId);
 		return ""+n;
 	}
+	
 	@PostMapping("/myModify") //회원정보수정
 	@ResponseBody
 	public String doMymodify(HttpServletRequest req) {
@@ -155,9 +175,9 @@ public class ShopController {
 		int n= sdao.modify(userId, name, birth, zipcode, adress, mobile, mail);
 		System.out.println(n);
 		return ""+n;
-		
 	}
-	@GetMapping("/catagoryboard") //카테고리 select option에 로딩
+	
+	@GetMapping("/catagoryboard") //카테고리 select option에 로드
 	@ResponseBody
 	public String doCategory() {
 		ArrayList<BoardCategoryDTO> categorys = sdao.category();
@@ -170,17 +190,162 @@ public class ShopController {
 			ja.add(jo);
 		}
 		return ja.toJSONString();
-	}	
+	}
+	
+	@GetMapping("/answerstate") //답변 상태 로드
+	@ResponseBody
+	public String answerstate() {
+		ArrayList<answerstateDTO> answerstate = sdao.answerstate();
+		
+		JSONArray ja=new JSONArray();
+		for(int i=0; i<answerstate.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("id",answerstate.get(i).getId());
+			jo.put("name", answerstate.get(i).getName());
+			ja.add(jo);
+		}
+		return ja.toJSONString();
+	}
+	
 	@PostMapping("/doWrite") // 글 작성
 	@ResponseBody
 	public String doWrite(HttpServletRequest req) {
-		String title=req.getParameter("title");
-		String writer=req.getParameter("writer");
-		String text=req.getParameter("text");
-		int category=Integer.parseInt(req.getParameter("category"));
+	    String title = req.getParameter("title");
+	    String writer = req.getParameter("writer");
+	    String content = req.getParameter("content");
+	    String categoryParam = req.getParameter("category");
+	    String memberIDParam = req.getParameter("memberID");
+	    int answer = 1;
+	    if (categoryParam != null && memberIDParam != null) {
+	        int category = Integer.parseInt(categoryParam);
+	        int memberID = Integer.parseInt(memberIDParam);
+	        
+	        if (category <= 2) {
+	            int n = sdao.myWrite(title, writer, content, category);
+	            return String.valueOf(n);
+	        } else if (category >= 3) {
+	            int n = sdao.customerWrite(memberID, category, title, writer, content, answer);
+	            return "2";
+	        }
+	    }
+	    return "0";
+	}
+	
+	
+	@PostMapping("/boardModify") // 글 수정
+	@ResponseBody
+	public String doBoardmodify(HttpServletRequest req) {
+	    String title = req.getParameter("title");
+	    String content = req.getParameter("content");
+	    int uniq = Integer.parseInt(req.getParameter("uniq"));
+
+	    // categoryParam 값이 null이면 기본값을 설정합니다. (예: -1)
+	    int categoryParam;
+	    String categoryStr = req.getParameter("category");
+	    if (categoryStr != null) {
+	        categoryParam = Integer.parseInt(categoryStr);
+	    } else {
+	        categoryParam = -1; // or throw new IllegalArgumentException("Category parameter is missing.");
+	    }
+
+	    if (categoryParam == 1 || categoryParam == 2) {
+	        int n = sdao.modifyBoard(title, content, uniq);
+	        return String.valueOf(n);
+	    } else if (categoryParam >= 3) {
+	        sdao.modifyDirectQnA(title, content, uniq);
+	        return "2";
+	    }
+	    return "0";
+	}
+
+
+	@PostMapping("/boardDelete") // 글 삭제
+	@ResponseBody
+	public String doBoarddelete(HttpServletRequest req) {
+	    int uniq = Integer.parseInt(req.getParameter("uniq"));
+
+	    // categoryParam 값이 null이면 기본값을 설정합니다. (예: -1)
+	    int categoryParam;
+	    String categoryStr = req.getParameter("category");
+	    System.out.println(categoryStr);
+	    if (categoryStr != null) {
+	        categoryParam = Integer.parseInt(categoryStr);
+	    } else {
+	        categoryParam = -1; // or throw new IllegalArgumentException("Category parameter is missing.");
+	    }
+
+	    System.out.println(categoryParam);
+	    
+	    if (categoryParam == 1 || categoryParam == 2) {
+	        int n = sdao.delete(uniq);
+	        return String.valueOf(n);
+	    } else if (categoryParam >= 3) {
+	        sdao.deleteDirectQnA(uniq);
+	        return "2";
+	    }
+	    return "0";
+	}
+
+	@PostMapping("/doComment") // 답변 작성
+	@ResponseBody
+	public String doComment(HttpServletRequest req) {
+	    int directID = Integer.parseInt(req.getParameter("uniq"));// 글번호 
+	    String writer = req.getParameter("writer");
+	    int category = Integer.parseInt(req.getParameter("category"));
+	    String Qwriter = req.getParameter("Qwriter");
+	    String comment = req.getParameter("comment");
+	   
+	   int n = sdao.comment(directID, writer, category, Qwriter, comment);
+	    return ""+n;
+	}
+
+	@PostMapping("/commentLoad") // 답변 요청
+	@ResponseBody
+	public String commentLoad (HttpServletRequest req) {
+		ArrayList<directQnAanswerDTO> directQnAanswer = sdao.directQnAanswer();
 		
-		int n=sdao.myWrite(title,writer,text,category);
-		return ""+n;
+		JSONArray ja=new JSONArray();
+		for(int i=0; i<directQnAanswer.size(); i++) {
+			JSONObject jo = new JSONObject();
+			jo.put("id",directQnAanswer.get(i).getId());
+			jo.put("content", directQnAanswer.get(i).getContent());
+			jo.put("Commet_id",directQnAanswer.get(i).getCommentID());
+			ja.add(jo);
+			
+		}
+		return ja.toJSONString();
+			
+	}
+	@PostMapping("/QnaDelete") // 답변 삭제
+	@ResponseBody
+	public String qnaDelete(HttpServletRequest req) {
+	    String comment_id = req.getParameter("comment_id");
+
+	    // comment_id 값이 비어 있는지 확인하여 처리합니다.
+	    if (comment_id != null && !comment_id.isEmpty()) {
+	        int n = sdao.QnAdelete(Integer.parseInt(comment_id));
+	        return String.valueOf(n);
+	    } else {
+	        // comment_id가 비어 있을 경우에 대한 처리
+	        return "0"; // 예: 오류 코드 또는 기본 반환값
+	    }
+	}
+
+	@PostMapping("/QnaModify") // 답변 수정
+	@ResponseBody
+	public String qnaModify(HttpServletRequest req) {
+	    String comment_id = req.getParameter("comment_id");
+	    String comment = req.getParameter("comment");
+
+	    // comment_id 값이 비어 있는지 확인하여 처리합니다.
+	    if (comment_id != null && !comment_id.isEmpty()) {
+	        int n = sdao.commentModify(Integer.parseInt(comment_id), comment);
+	        System.out.println(n);
+	        return String.valueOf(n);
+	    } else {
+	        // comment_id가 비어 있을 경우에 대한 처리
+	        return "0"; // 예: 오류 코드 또는 기본 반환값
+	    }
 	}
 	
 	@PostMapping("/orderData")
@@ -202,23 +367,5 @@ public class ShopController {
 		System.out.println("ja : " + ja);
 		return ja.toJSONString();
 	}
-	
-//	@PostMapping("/myLoad")
-//	@ResponseBody
-//	public String  doMyLoad (HttpServletRequest req) {
-//		String userId=req.getParameter("userid");
-//		member0DTO myMy=sdao.myLoad(userId);
-//		System.out.println(myMy);
-//		JSONArray ja=new JSONArray();
-//		JSONObject jo = new JSONObject();
-//		
-//		return ja.toJSONString();
-//	}	
-	
-//	@PostMapping("/write")
-//	@ResponseBody
-//	public String goWrite(HttpServletRequest req) {
-//		
-//	}
 
 }

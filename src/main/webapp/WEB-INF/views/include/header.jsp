@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%
 String id=(String)session.getAttribute("id"); // session 설정있음
+String admin=(String)session.getAttribute("admin");// session 설정있음
 %>
+
 <div id="menu">
 <% if (id == null) { %>
     <a href="/login" class="menuBar">로그인</a>
@@ -14,6 +16,9 @@ String id=(String)session.getAttribute("id"); // session 설정있음
   <a href="/cart" class="menuBar">장바구니</a>
   <a href="/mypage" class="menuBar">마이페이지</a>
   <a href="/customer" class="menuBar">고객센터</a>
+    <% if (admin != null ) { %>
+  <a href="/shopAdmin" class="menuBar">상점관리</a>
+  <% } %>
 </div>
 <div class="space">
 </div>
