@@ -45,30 +45,38 @@
         <div style="width: 80%; margin: 0 auto;"> <!--총 정보를 감싼 DIV-->
           <div style="float:left; width: 100%;height: 100%;">
           <h2>1. 주문상품 정보</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th colspan="2">상품정보</th>
-                  <th>수량</th>
-                  <th>구매금액</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><img src="" alt="magic keyboard"> </td>
-                  <td>
-                    <p>Apple 매직 키보드 - 한국어(MK2A3KH/A)</p>
-                    <sapn class="price">개별금액: <input id="sPrice" value=20000 style="border:none">원</sapn>
-                  </td>
-                  <td>
-                    <input type="text" id="amount" value="1" size="1">
-                    <input type="button" id=plus value=" + ">
-                    <input type="button" id=minus value=" - ">
-                  </td>
-                  <td><input type="text" id="aPrice" style="border:none"></td>
-                </tr>
-              </tbody>
-            </table>
+     <table>
+       <thead>
+           <tr>
+               <td colspan="2">상품정보</td>
+               <td>옵션</td>
+               <td>상품금액</td>
+               <td>배송비</td>
+           </tr>
+       </thead>
+       
+       <tbody>
+       <c:forEach var="item" items="${cartItems}" varStatus="status">
+           <tr >
+               
+               <td rowspan="2">
+                   <img src="/img/${item.img1}" alt="magic keyboard" style="width:75px;">
+               </td>
+               <td>
+                   <p>${item.title}</p>
+               </td>
+               <td rowspan="2">
+                   수량 :  <input type="text" class="amount" value="${item.cnt}" size="1" readonly>
+               </td>
+                 <td class="aPrice" rowspan="2">${item.total}</td>
+               <td rowspan="2" class="delPay">${item.pay}</td>
+           </tr>
+           <tr>
+           <td class="Price">${item.price}</td>
+           </tr>
+       </c:forEach>
+       </tbody>
+     </table>
             <br>
             <table>
               <thead>
@@ -81,10 +89,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td id=goodsPrice></td>
+                  <td id=delPrice></td>
+                  <td id=discount>0</td>
+                  <td id=finalPrice></td>
                 </tr>
               </tbody>
             </table>
@@ -183,9 +191,13 @@ $(document)
       $(".tkadress").val("")
       $(".tkmobile").val("")
     }
-  });
-  setingOrder();
-});
+  })
+/*   setingOrder(); */
+
+$('#goodsPrice').text(setingGoodsPrice());
+setingDelPrice();
+$('#finalPrice').text(Number($('#goodsPrice').text()) + Number($('#delPrice').text()) - Number($('#discount').text()))
+})
 
 <%-- .on('click','#bgngoOrder',function(){
 	let id = '<%=(String)session.getAttribute("id")%>';
@@ -224,6 +236,37 @@ $(document)
     		}
     	})
     }
+    
+    function setingGoodsPrice(){
+    let totalPrice = $(".aPrice");
+    let sum = 0;
+
+    totalPrice.each(function() {
+        let price = $(this).text();
+        sum += Number(price);
+    });
+		return sum;
+    }
+    
+    function setingDelPrice(){
+        let totalPrice = $(".delPay");
+        let sum = 0;
+
+        totalPrice.each(function() {
+            let price = $(this).text();
+            sum += Number(price);
+        });
+        
+        if(setingGoodsPrice() > 50000 || setingGoodsPrice() == '0') {
+        	$("#delPrice").text(0);
+        } else if (sum >= 2500){
+        	$("#delPrice").text(2500);
+        } else {
+        	$("#delPrice").text(sum);
+        }
+    }
+        
+    
 </script>
 
 </html>

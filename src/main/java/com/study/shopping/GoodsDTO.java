@@ -16,4 +16,14 @@ public class GoodsDTO {
 	String img1;
 	String content;
 	int pay;
+	int cart_id;
+	int cnt;
+	String mobile;
+	String mail;
+	String member_name;
+	String del_name;
+	int total;
+	String user_id;
+	int member_id;
+	int goods_id;
 }

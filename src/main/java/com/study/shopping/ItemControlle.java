@@ -1,7 +1,7 @@
 package com.study.shopping;
 
-import java.security.Provider.Service;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ItemControlle {
@@ -99,15 +99,49 @@ public class ItemControlle {
 			model.addAttribute("goodsSend",goodsSend);
 			int result = Integer.parseInt(req.getParameter("result"));
 			model.addAttribute("result",result);
-			int goodsPrice = result*Integer.parseInt(req.getParameter("goodsPrice"));
+			int goodsPrice = result*Integer.parseInt(req.getParameter("goodsPrice").trim());
 			model.addAttribute("goodsPrice",goodsPrice);
 			
 			return "/order";
 		}
 		@GetMapping("/order")
-		public String getOrder(Model model) {
-			return "order";
+		public String getOrder(HttpServletRequest req,Model model) {
+		    HttpSession session = req.getSession();
+		    String id = (String) session.getAttribute("id");
+			String goods_id = req.getParameter("goods_id");
+			String cart_id = req.getParameter("sendOrder");
+			String[] orderList = cart_id.split(",");
+			ArrayList<GoodsDTO> cartItems = new ArrayList<>();
+			
+			System.out.println("cart_id : " + cart_id);
+			System.out.println("orderList : " + orderList);
+			System.out.println("goods_id : " + goods_id);
+			System.out.println("id : " + id);
+			if (goods_id != null) { // 상세페이지에서 온경우 제품정보를 모아서 처리
+				cartItems = gdao.itemInfo(Integer.parseInt(goods_id));
+				model.addAttribute("cartItems", cartItems);
+				System.out.println("goodsPage");
+				return "order";
+				
+			} else if (cart_id != null) { // 카트에서온경우 장바구니정보를 모아서 처리
+				System.out.println("cartPage");
+				for(int i = 0; i < orderList.length; i++) {
+					System.out.println(orderList[i]);
+					System.out.println("for진입");
+					cartItems.add(gdao.cartOrder(Integer.parseInt(orderList[i])));
+				}
+				
+				for(int i = 0; i < cartItems.size(); i++) {
+					System.out.println(cartItems.get(i));
+					System.out.println("fooor");
+					
+				}
+			    model.addAttribute("cartItems", cartItems);
+			    return "order";
+			}    
+			return "mypage";
 		}
+		
 		@GetMapping("/orderEnd")
 		public String getOrderEnd() {
 			return "orderEnd";
@@ -142,9 +176,56 @@ public class ItemControlle {
 		  }
 		  
 			@GetMapping("/cart")
-			public String addCart() {
-				return "cart";
+			public String getCart(HttpServletRequest req,Model model) {
+			    HttpSession session = req.getSession();
+			    
+			    String id = (String) session.getAttribute("id");
+			    
+			    if (id != null) {
+			    	ArrayList<GoodsDTO> cartItems = gdao.getCart(id);
+			        model.addAttribute("cartItems", cartItems);
+			        return "cart";
+			    }
+			    return "cart";
 			}
+			
+			  @PostMapping("/addCart")
+			  @ResponseBody
+			  public String addCart(HttpServletRequest req) {
+				String user_id = req.getParameter("member_id");
+				System.out.println("user_id : " + user_id);
+				int member_id = gdao.getIdNum(user_id);
+				
+				String goods_id = req.getParameter("goods_id");
+				String cnt = req.getParameter("cnt");
+				int m = gdao.checkCart(member_id, Integer.parseInt(goods_id));
+				System.out.println("member_id : " + member_id);
+				System.out.println("goods_id : " + goods_id);
+				System.out.println("cnt : " + cnt);
+				if(m == 0) {
+					int n = gdao.addCart(member_id, Integer.parseInt(goods_id), Integer.parseInt(cnt));
+					System.out.println("n:" + n);
+					return "" + n;
+				} else {
+					System.out.println("m:" + m);
+					return ""+0;
+				}
+				
+			  }
+			  
+			  @PostMapping("/delCart")
+			  @ResponseBody
+			  public String delCart(@RequestParam(value="checked[]") Integer[] cartValues) {
+				  int n = 0;
+				  for(int i = 0; i < cartValues.length; i++) {
+					  int value = cartValues[i];
+			            System.out.println("value: " + value);
+				  n = gdao.delCart(value);
+			  }
+			  	return "" + n;
+			  }
+			  
+			  
 			
 			  @PostMapping("/getReview")
 			  @ResponseBody
@@ -166,7 +247,34 @@ public class ItemControlle {
 				}
 				System.out.println("ja : " + ja);
 				return ja.toJSONString();
-			  }			
+			  }	
+			  
+			  @PostMapping("/updateCart")
+			  @ResponseBody
+			  public String updateCart(HttpServletRequest req) {
+				  String id = req.getParameter("id");
+				  String cnt = req.getParameter("cnt");
+				  
+				  int n = gdao.updateCart(Integer.parseInt(id),Integer.parseInt(cnt));
+				 
+				  return "" + n;
+			  }
+			  
+//				@GetMapping("/orderByCart")
+//				public String cartOrder(HttpServletRequest req,Model model) {
+//				    HttpSession session = req.getSession();
+//				    String id = (String) session.getAttribute("id");
+//				    Integer[] cart = (Integer[]) req.getAttribute("checked[]");
+//				    
+//				    
+//					  int n = 0;
+//					  for(int i = 0; i < cart.length; i++) {
+//						  int order = cart[i];
+//				            System.out.println("order: " + order);
+//					  }
+//			    return ""+n;
+//				}
+				
 			  
 			  @PostMapping("/getQna")
 			  @ResponseBody
@@ -216,4 +324,5 @@ public class ItemControlle {
 //		public String goods() {
 //			return "goods";
 //		}
+
 }

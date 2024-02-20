@@ -65,15 +65,13 @@ table {
             <img class="S_img5" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
           </div>
         </div>
+        <input type="hidden" style="display:none" id="goodsNumber" value="${itemInfo[0].id}">
         <div style="display: inline-block;">
           <table style="font-size: 30px;display: inline-block;">
             <tr><td colspan="2" class="goodsName">${itemInfo[0].title}</td></tr>
             <tr>
               <td>판매가</td>
-              <td class="goodsPrice">
-                ${itemInfo[0].price}
-                <input type="hidden" style="display:none" id="goodsNumber" value="${itemInfo[0].id}">
-              </td>
+              <td class="goodsPrice">${itemInfo[0].price}</td>
             </tr>
             <tr>
               <td>배송비</td>
@@ -82,7 +80,7 @@ table {
             <tr>
               <td>수량</td>
               <td>
-                <input type="text" class="result" readonly value="1"style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
+                <input type="text" id="result" readonly value="1" style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
                 <input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+">
                 <input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-">
               </td>
@@ -90,7 +88,7 @@ table {
           </table>
         </div>
         <div style="text-align: right;">
-          <input type="button" style="width: 120px;height: 30px;" onclick=addCart(); value="장바구니에담기">
+          <input type="button" style="width: 120px;height: 30px;" id="addCart" value="장바구니에담기">
           <input type="button" style="width: 120px;height: 30px;" onclick=Juuu(); value="주문하기">
         </div>
       </div>
@@ -130,13 +128,6 @@ table {
         <hr style="width:90%">
         <div>
           <table id="tblReview">
-<!--             <tr><td colspan="2">평점</td></tr>
-            <tr><td colspan="2">작성자 / 작성일시</td></tr>
-            <tr><td class="Re1" onclick="togl(this)" style="cursor: pointer;" colspan="2">내용</td></tr>
-            <tr class="Re1" hidden>
-              <td>여백</td>
-              <td>관리자</td>
-            </tr> -->
           </table>
         </div>
       </div>
@@ -151,23 +142,6 @@ table {
               <th>작성자</th>
               <th>작성일</th>
             </tr>
-<!--             <tr class="Moon1" onclick="togl(this)" style="cursor: pointer;">
-              <td>상태</td>
-              <td>내용</td>
-              <td>작성자</td>
-              <td>작성일</td>
-            </tr>
-            <tr class="Moon1" hidden >
-              <td></td>
-              <td>
-                 Q. 내용<br>
-                 <hr>
-                 A. 답변<br>
-              </td>
-              <td>작성자</td>
-              <td>작성일자</td>
-            </tr> -->
-
           </table>
         </div>
       </div>
@@ -175,9 +149,8 @@ table {
         <h1 style="text-align: left;font-style: initial;">교환/반품 안내</h1>
         <hr style="width:90%">
       </div>
-    </main>   
-  </div>
-
+      </div>
+    </main>
 
     <footer id="footer">
       <%@ include file="include/footer.jsp" %>
@@ -188,13 +161,11 @@ table {
 <script>
 $(document).ready(function() {
 	
-
-    
     let imgSrc = '<%= request.getAttribute("imgSrc") %>';
     getReviwe();
     getQna();
 });
-let admin = '<%=(String)session.getAttribute("id")%>';
+let id = '<%=(String)session.getAttribute("id")%>';
 
 $(document).on('click', '.btnQna', function() {
 	
@@ -215,18 +186,46 @@ $(document).on('click', '.btnQna', function() {
     })
 })
 .on('click','.notyet',function(){
-	if($(this).find('td:eq(0)').text() == '미답변' && admin != 'admin'){
+	if($(this).find('td:eq(0)').text() == '미답변' && id != 'himedia'){
        return false;
 	}
 	$(this).closest('tr').next('.Re1').toggle();
 })
+
+
+.on('click','#addCart',function(){
+	alert(id);
+	alert($('#goodsNumber').val());
+	alert($('#result').val());
+	$.ajax({
+		type:'post', url:'/addCart',
+		data:{member_id:id, goods_id:$('#goodsNumber').val(), cnt:$('#result').val()},
+		dataType:'text',
+		success:function(data){
+			if(data == 1){
+				alert("장바구니에 상품을 담았습니다.")
+				let result = confirm("장바구니로 이동하시겠습니까?")
+				if(result){
+					document.location='/cart'
+				} else {
+					return false;
+				};
+			} else {
+				alert("이미 같은 상품이 장바구니에 담겨있습니다.")
+				return false;
+			}
+		}
+	})
+})
+
+
 
 function toglReview(TKclass) {
     $(TKclass).closest('tr').next('.Re1').toggle();
 }
 
 function count(type)  {
-  const resultElement = $('.result');
+  const resultElement = $('#result');
   let number = resultElement.val();
   if(type === 'plus') {
     number = parseInt(number) + 1;
@@ -247,12 +246,10 @@ function offIMG(){
 } /*마우스가 그림에서 떠날때 설정한 기본상품의 그림 초반그림 설정해줘야함*/
 
 function Juuu(){
-  document.location='/tkorder?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('.result').val();
+  document.location='/tkorder?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('#result').val();
 }/**/
 
-function addCart(){
-  document.location='/cart?img='+$('.M_img').attr('src')+'&goodsName='+$('.goodsName').text()+'&goodsPrice='+$('.goodsPrice').text()+'&goodsSend='+$('.goodsSend').text()+'&result='+$('.result').val();
-}/**/
+
 
 //리뷰 불러오는 함수
 function getReviwe() {
@@ -292,7 +289,7 @@ function getQna() {
 	            +  '<td>'+ member_name +'</td>'
 	            +  '<td>' + data[i].qusdate +'</td></tr>'
 	            
-	            if(data[i].state == '1' && admin == 'admin') {
+	            if(data[i].state == '1' && id == 'himedia') {
 	            		str+=  '<tr class="Re1" hidden>'
 			            +  '<td colspan="3"><textarea rows="4" id="setAnswer' + i + '"></textarea></td>'
 			            + '<td><button class="btnQna"data-i="' + i + '" data-qna_id="' + qna_id + '" data-member_name="' + member_name + '" data-member_id="' + member_id + '">등록하기</button></td></tr>'
