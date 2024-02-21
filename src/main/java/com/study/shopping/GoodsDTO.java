@@ -1,5 +1,7 @@
 package com.study.shopping;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -14,7 +16,12 @@ public class GoodsDTO {
 	int stock;
 	int delivery;
 	String img1;
+	String img2;
+	String img3;
+	String img4;
+	String img5;
 	String content;
+	String delpay;
 	int pay;
 	int cart_id;
 	int cnt;
@@ -27,4 +34,6 @@ public class GoodsDTO {
 	int member_id;
 	int goods_id;
 	int g_id;
+	private MultipartFile image;
+	int discnt;
 }

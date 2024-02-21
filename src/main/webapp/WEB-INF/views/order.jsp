@@ -58,7 +58,7 @@
        
        <tbody>
        <c:forEach var="item" items="${cartItems}" varStatus="status">
-       <input type="hidden" style="display:none" class="orderGoodsId" value="${item.goods_id}">
+      
         <input type="hidden" style="display:none" class="cartId" value="${item.cart_id}">
            <tr >
                <td rowspan="2">
@@ -71,6 +71,7 @@
                <input type="hidden" style="display:none" class="orderGoodsId" value="${item.goods_id}">
                <td rowspan="2">
                    수량 :  <input type="text" class="amount" value="${item.cnt}" size="1" readonly>
+                   <input type="hidden" style="display:none" class="orderGid" value="0">
                </td>
                <td class="aPrice" rowspan="2">${item.total}</td>
                </c:if>
@@ -294,9 +295,10 @@ $('#goodsPrice, #goodsPrice2').text(setingGoodsPrice());
     console.log("delreq : " + $('#delreq').val())
     console.log("dele : " + delPrice)
     console.log("pament : " + $('input[name=payment]:checked').val())
+    
 	$.ajax({
 		type:'post', url:'/saveOrder',
-		data:{cart_id : cart_id_str, g_id : $('.orderGid'), goods_id : goods_id_str, cnt : cnt_str, price : price_str, delname : $('.tkname').val(), delzipcode : $('#zipcode2').val(), deladress : $('#adress2').val(), deladress2 : $('#sAdress2').val(), delmobile : $('.tkmobile').val(), delreq : $('#delreq').val(), delprice : delPrice ,payment : $('input[name=payment]:checked').val()}, 
+		data:{cart_id : cart_id_str, g_id : $('.orderGid').val(), goods_id : goods_id_str, cnt : cnt_str, price : price_str, delname : $('.tkname').val(), delzipcode : $('#zipcode2').val(), deladress : $('#adress2').val(), deladress2 : $('#sAdress2').val(), delmobile : $('.tkmobile').val(), delreq : $('#delreq').val(), delprice : delPrice ,payment : $('input[name=payment]:checked').val()}, 
 		dataType:'text',
 		success:function(data){
 			if(data==1){

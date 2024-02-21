@@ -13,6 +13,7 @@ public class MemberDTO {
 	String birth;
 	String gender;
 	String join_day;
+	String out_day;
 	String zipcode;
 	String adress;
 	String adress2;

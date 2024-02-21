@@ -17,7 +17,7 @@ String admin=(String)session.getAttribute("admin");// session 설정있음
   <a href="/mypage" class="menuBar">마이페이지</a>
   <a href="/customer" class="menuBar">고객센터</a>
     <% if (admin != null ) { %>
-  <a href="/shopAdmin" class="menuBar">상점관리</a>
+  <a href="/admin" class="menuBar">상점관리</a>
   <% } %>
 </div>
 <div class="space">

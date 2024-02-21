@@ -75,4 +75,7 @@
 	INSERT into ordergroup set delname=#{param1} , delzipcode=#{param2}, deladress=#{param3}, deladress2=#{param4} ,delmobile=#{param5},
 				delreq=#{param6}, delpay=#{param7}, payment=#{param8}
 </insert >
+<insert id="addOrder">
+	INSERT into order0 set member_id=#{param1}, goods_id=#{param2}, cnt=#{param3}, sales=#{param4}
+</insert >
 </mapper>

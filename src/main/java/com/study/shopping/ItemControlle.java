@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ItemControlle {
-	
+
 	@Autowired
 	private GoodsDAO gdao; 
 	@Autowired
@@ -29,27 +29,6 @@ public class ItemControlle {
 	@Autowired
 	private ShopDAO sdao;
 
-	@GetMapping("/pushItem")
-	public String home() {
-		return "pushItem";
-	}
-	
-	@PostMapping("/goodsAdd")
-	@ResponseBody
-	public String doGoodsAdd(HttpServletRequest req) {
-		String category_id = req.getParameter("category_id");
-		String title = req.getParameter("title");
-		String goods = req.getParameter("goods");
-		String price = req.getParameter("price");
-		String stock = req.getParameter("stock");
-		String delivery = req.getParameter("delivery");
-		String img = req.getParameter("img");
-		String content = req.getParameter("content");
-		int n = gdao.goodsAdd(Integer.parseInt(category_id), title, goods, Integer.parseInt(price), Integer.parseInt(stock), img, content); //insert
-		System.out.println(n);
-	return "" + n;
-	}
-	
 	@GetMapping("/itemView")
 	public String itemView(@RequestParam("id") String id,Model model) {
 		System.out.println(id);
@@ -66,8 +45,8 @@ public class ItemControlle {
 	    System.out.println(id);
 	    ArrayList<GoodsDTO> item = gdao.itemInfo(Integer.parseInt(id));
 		System.out.println(item);
-		   model.addAttribute("itemInfo", item);
-		   return "/goods";
+		model.addAttribute("itemInfo", item);
+		return "/goods";
 	}
 	
 	@GetMapping("/announ")
@@ -147,30 +126,37 @@ public class ItemControlle {
 		HttpSession session = req.getSession();
 		String id = (String) session.getAttribute("id");
 		
-		String goods_id_str = req.getParameter("goods_id_str");
-		String cnt_str = req.getParameter("cnt_str");
-		String price_str = req.getParameter("price_str");
-		
-		String cart_id_str = req.getParameter("cart_id_str");
+		String goods_id_str = req.getParameter("goods_id");
+		String cnt_str = req.getParameter("cnt");
+		String price_str = req.getParameter("price");
 		
 		String g_id = req.getParameter("g_id");
 
-		
+		String cart_id_str = req.getParameter("cart_id");
 		int member_id = gdao.getIdNum(id);
+		System.out.println("goods_id_str = " + goods_id_str);
+		System.out.println("cnt_str = " + cnt_str);
+		System.out.println("price_str = " + price_str);
+		System.out.println("g_id = " + g_id);
+		System.out.println("cart_id_str = " + cart_id_str);
+		
 //		String[] cart_id = cart_id_str.split(",");
-		if(g_id.equals(null)) { // 장바구니에서 온거
+		if(g_id.equals("0")) { // 장바구니에서 온거
 			String[] goods_id = goods_id_str.split(",");
 			String[] cnt = cnt_str.split(",");
 			String[] price = price_str.split(",");
+			String[] cart_id = cart_id_str.split(",");
 			
-			for(int i = 0; i < cnt.length; i++) {
-				int n = sdao.addOrder(member_id,Integer.parseInt(goods_id[i]),Integer.parseInt(cnt[i]),Integer.parseInt(price[i]));
+			for(int i = 0; i < goods_id.length; i++) {
+				int a = sdao.addOrder(member_id,Integer.parseInt(goods_id[i]),Integer.parseInt(cnt[i]),Integer.parseInt(price[i]));
+			}
+			for(int i = 0; i < cart_id.length; i++) {
+				int b = gdao.delCart(Integer.parseInt(cart_id[i]));
 			}
 		} else {
-			int n = sdao.addOrder(member_id,Integer.parseInt(g_id),Integer.parseInt(cnt_str),Integer.parseInt(price_str));
+			int c = sdao.addOrder(member_id,Integer.parseInt(g_id),Integer.parseInt(cnt_str),Integer.parseInt(price_str));
 		}
 
-		
 		String delname = req.getParameter("delname");
 		String delzipcode = req.getParameter("delzipcode");
 		String deladress = req.getParameter("deladress");
