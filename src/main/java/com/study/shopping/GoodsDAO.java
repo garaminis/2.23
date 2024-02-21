@@ -16,4 +16,5 @@ public interface GoodsDAO {
 	int checkCart(int a, int b);
 	int delCart(int value);
 	int updateCart(int a, int b);
+	int addOrder(int a, String b, String c, String d);
 }

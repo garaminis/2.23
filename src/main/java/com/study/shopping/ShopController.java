@@ -64,6 +64,7 @@ public class ShopController {
 			jo.put("birth",data.get(i).birth);
 			jo.put("zipcode",data.get(i).zipcode);
 			jo.put("adress",data.get(i).adress);
+			jo.put("adress2",data.get(i).adress2);
 			jo.put("mobile",data.get(i).mobile);
 			jo.put("mail",data.get(i).mail);
 			ja.add(jo);
@@ -122,9 +123,9 @@ public class ShopController {
 		String adress=req.getParameter("adress");
 		String zipcode=req.getParameter("zipcode");
 		String gender=req.getParameter("gender");
-		String sAdress=req.getParameter("sAdress");
+		String adress2=req.getParameter("adress2");
 		
-		int n=sdao.add(userId,psw,name,mobile,mail,birth,adress,zipcode,gender,sAdress);
+		int n=sdao.add(userId,psw,name,mobile,mail,birth,adress,zipcode,gender,adress2);
 		return ""+n;
 	}
 	
@@ -169,10 +170,11 @@ public class ShopController {
 		String birth=req.getParameter("birth");
 		String zipcode=req.getParameter("zip_code");
 		String adress=req.getParameter("adress");
+		String adress2=req.getParameter("adress2");
 		String mobile=req.getParameter("mobile");
 		String mail=req.getParameter("mail");
 		
-		int n= sdao.modify(userId, name, birth, zipcode, adress, mobile, mail);
+		int n= sdao.modify(userId, name, birth, zipcode, adress, adress2, mobile, mail);
 		System.out.println(n);
 		return ""+n;
 	}

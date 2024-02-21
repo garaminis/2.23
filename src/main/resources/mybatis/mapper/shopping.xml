@@ -27,7 +27,7 @@
 	<![CDATA[ SELECT count(*) FROM member0 WHERE user_id=#{param1} ]]>
 </select>
 <select id="myLoad" resultType="com.study.shopping.MemberDTO">
-	SELECT id, name, birth, zipcode, adress, mobile, mail from member0 where user_id=#{param1}
+	SELECT id, name, birth, zipcode, adress, adress2, mobile, mail from member0 where user_id=#{param1}
 </select> 
 <update id="modify">
 	UPDATE member0 set name=#{param2}, birth=#{param3}, zipcode=#{param4}, adress=#{param5}, mobile=#{param6}, mail=#{param7}
@@ -71,5 +71,8 @@
 <select id="orderData" resultType="com.study.shopping.MemberDTO">
 	SELECT name, mail, mobile, adress from member0 where user_id=#{param1}
 </select>
-
+<insert id="saveOrder">
+	INSERT into ordergroup set delname=#{param1} , delzipcode=#{param2}, deladress=#{param3}, deladress2=#{param4} ,delmobile=#{param5},
+				delreq=#{param6}, delpay=#{param7}, payment=#{param8}
+</insert >
 </mapper>

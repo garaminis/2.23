@@ -15,7 +15,7 @@ public class MemberDTO {
 	String join_day;
 	String zipcode;
 	String adress;
-	String sAdress;
+	String adress2;
 	int member_rank;
 
 }

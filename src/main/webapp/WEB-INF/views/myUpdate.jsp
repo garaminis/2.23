@@ -96,7 +96,7 @@ button:hover {
 	        <td colspan="2"><input type="text" id="adress"  placeholder="기본주소"></td>
 	      </tr>
 			  <tr>
-			    <td colspan="2"><input type="text" id="adress2"  placeholder="상세주소(아직 미완성)"></td>
+			    <td colspan="2"><input type="text" id="adress2"  placeholder="상세주소"></td>
 			  </tr>
 			  <tr>
 			    <td colspan="2"><input type="tel" id="mobile"  placeholder="핸드폰번호" ></td>
@@ -130,7 +130,7 @@ $(document)
 	$.ajax({
 		type:'post', url:'/myModify',
 		data:{user_id:$('#user_id').val(),name:$('#name').val(),birth:$('#birth').val(),zip_code:$('#zip_code').val(),
-			  adress:$('#adress').val(), mobile:$('#mobile').val(),mail:$('#mail').val()}, 
+			  adress:$('#adress').val(), adress2:$('#adress2').val(), mobile:$('#mobile').val(),mail:$('#mail').val()}, 
 		dataType:'text',
 		success:function(data){
 			if(data==1){
@@ -170,6 +170,7 @@ function setingData(){
 				$('#birth').val(data[0].birth);
 				$('#zip_code').val(data[0].zipcode);
 				$('#adress').val(data[0].adress);
+				$('#adress2').val(data[0].adress2);
 				$('#mobile').val(data[0].mobile);
 				$('#mail').val(data[0].mail);
 		}

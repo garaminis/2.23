@@ -65,7 +65,9 @@ table {
             <img class="S_img5" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
           </div>
         </div>
-        <input type="hidden" style="display:none" id="goodsNumber" value="${itemInfo[0].id}">
+        <form method='get' action="/order" id="goOrder">
+        <input type="hidden" style="display:none" id="goodsNumber" name="goodsNumber" value="${itemInfo[0].id}">
+         <input type="hidden" style="display:none" id="gPrice" name="goodsPrice" value="">
         <div style="display: inline-block;">
           <table style="font-size: 30px;display: inline-block;">
             <tr><td colspan="2" class="goodsName">${itemInfo[0].title}</td></tr>
@@ -80,16 +82,17 @@ table {
             <tr>
               <td>수량</td>
               <td>
-                <input type="text" id="result" readonly value="1" style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
+                <input type="text" id="result" name="result" readonly value="1" style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
                 <input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+">
                 <input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-">
               </td>
             </tr>
           </table>
         </div>
+        </form>
         <div style="text-align: right;">
           <input type="button" style="width: 120px;height: 30px;" id="addCart" value="장바구니에담기">
-          <input type="button" style="width: 120px;height: 30px;" onclick=Juuu(); value="주문하기">
+          <input type="button" style="width: 120px;height: 30px;" id="directOrder" value="주문하기">
         </div>
       </div>
       <div id="scrollbar"style="background-color: white; text-align: center; position: sticky; top: 0px; right: 300px;">
@@ -218,6 +221,11 @@ $(document).on('click', '.btnQna', function() {
 	})
 })
 
+.on('click','#directOrder',function(){
+	alert($('#goodsNumber').val())
+	$('#gPrice').val($('.goodsPrice').text())
+	$('#goOrder').submit();
+})
 
 
 function toglReview(TKclass) {

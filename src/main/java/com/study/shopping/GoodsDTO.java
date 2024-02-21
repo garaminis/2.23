@@ -26,4 +26,5 @@ public class GoodsDTO {
 	String user_id;
 	int member_id;
 	int goods_id;
+	int g_id;
 }

@@ -1,5 +1,6 @@
 package com.study.shopping;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,8 @@ public class ItemControlle {
 	private GoodsDAO gdao; 
 	@Autowired
 	private ReviewDAO rdao;
+	@Autowired
+	private ShopDAO sdao;
 
 	@GetMapping("/pushItem")
 	public String home() {
@@ -88,26 +91,35 @@ public class ItemControlle {
 			
 		return "/order";
 	}
+	
 	@GetMapping("/order")
 	public String getOrder(HttpServletRequest req,Model model) {
 		HttpSession session = req.getSession();
 		String id = (String) session.getAttribute("id");
-		String goods_id = req.getParameter("goods_id");
+		String goods_id = req.getParameter("goodsNumber");
+		String cnt = req.getParameter("result");
+		String price = req.getParameter("goodsPrice");
 		String cart_id = req.getParameter("sendOrder");
-		String[] orderList = cart_id.split(",");
+
 		ArrayList<GoodsDTO> cartItems = new ArrayList<>();
 			
 		System.out.println("cart_id : " + cart_id);
-		System.out.println("orderList : " + orderList);
 		System.out.println("goods_id : " + goods_id);
 		System.out.println("id : " + id);
 		if (goods_id != null) { // 상세페이지에서 온경우 제품정보를 모아서 처리
 			cartItems = gdao.itemInfo(Integer.parseInt(goods_id));
 			model.addAttribute("cartItems", cartItems);
 			System.out.println("goodsPage");
+			ArrayList<MemberDTO> userInfo = sdao.myLoad(id);
+			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("cnt", cnt);
+			model.addAttribute("price", price);
+			System.out.println(model);
+			
 			return "order";
 				
 		} else if (cart_id != null) { // 카트에서온경우 장바구니정보를 모아서 처리
+			String[] orderList = cart_id.split(",");
 			System.out.println("cartPage");
 			for(int i = 0; i < orderList.length; i++) {
 				System.out.println(orderList[i]);
@@ -119,9 +131,67 @@ public class ItemControlle {
 				System.out.println("fooor");
 			}
 			model.addAttribute("cartItems", cartItems);
+			
+			ArrayList<MemberDTO> userInfo = sdao.myLoad(id);
+			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("cnt", null);
+			
 			return "order";
 			}    
-		return "mypage";
+		return "";
+	}
+	
+	@PostMapping("/saveOrder")
+	@ResponseBody
+	public String addOrder(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		String id = (String) session.getAttribute("id");
+		
+		String goods_id_str = req.getParameter("goods_id_str");
+		String cnt_str = req.getParameter("cnt_str");
+		String price_str = req.getParameter("price_str");
+		
+		String cart_id_str = req.getParameter("cart_id_str");
+		
+		String g_id = req.getParameter("g_id");
+
+		
+		int member_id = gdao.getIdNum(id);
+//		String[] cart_id = cart_id_str.split(",");
+		if(g_id.equals(null)) { // 장바구니에서 온거
+			String[] goods_id = goods_id_str.split(",");
+			String[] cnt = cnt_str.split(",");
+			String[] price = price_str.split(",");
+			
+			for(int i = 0; i < cnt.length; i++) {
+				int n = sdao.addOrder(member_id,Integer.parseInt(goods_id[i]),Integer.parseInt(cnt[i]),Integer.parseInt(price[i]));
+			}
+		} else {
+			int n = sdao.addOrder(member_id,Integer.parseInt(g_id),Integer.parseInt(cnt_str),Integer.parseInt(price_str));
+		}
+
+		
+		String delname = req.getParameter("delname");
+		String delzipcode = req.getParameter("delzipcode");
+		String deladress = req.getParameter("deladress");
+		String deladress2 = req.getParameter("deladress2");
+		String delmobile = req.getParameter("delmobile");
+		String delreq = req.getParameter("delreq");
+		String delprice = req.getParameter("delprice");
+		String payment = req.getParameter("payment");
+		
+		System.out.println("delname = " + delname);
+		System.out.println("delzipcode = " + delzipcode);
+		System.out.println("deladress = " + deladress);
+		System.out.println("deladress2 = " + deladress2);
+		System.out.println("delmobile = " + delmobile);
+		System.out.println("delreq = " + delreq);
+		System.out.println("delprice = " + delprice);
+		System.out.println("payment = " + payment);
+		
+		int n = sdao.saveOrder(delname,delzipcode,deladress,deladress2,delmobile,delreq,Integer.parseInt(delprice),Integer.parseInt(payment));
+		
+		return "" + n;
 	}
 		
 	@GetMapping("/orderEnd")

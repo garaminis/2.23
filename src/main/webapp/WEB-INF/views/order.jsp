@@ -21,6 +21,7 @@
 	}
 }</style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!-- 다음카카오 주소API 스크립트 -->
 </head>
 
 <body>	
@@ -57,18 +58,39 @@
        
        <tbody>
        <c:forEach var="item" items="${cartItems}" varStatus="status">
+       <input type="hidden" style="display:none" class="orderGoodsId" value="${item.goods_id}">
+        <input type="hidden" style="display:none" class="cartId" value="${item.cart_id}">
            <tr >
-               
                <td rowspan="2">
                    <img src="/img/${item.img1}" alt="magic keyboard" style="width:75px;">
                </td>
                <td>
                    <p>${item.title}</p>
                </td>
+               <c:if test="${cnt == null}"> <!-- 장바구니에서 올경우 -->
+               <input type="hidden" style="display:none" class="orderGoodsId" value="${item.goods_id}">
                <td rowspan="2">
                    수량 :  <input type="text" class="amount" value="${item.cnt}" size="1" readonly>
                </td>
-                 <td class="aPrice" rowspan="2">${item.total}</td>
+               <td class="aPrice" rowspan="2">${item.total}</td>
+               </c:if>
+               <c:if test="${cnt != null}"> <!-- 상세페이지에서 올경우 -->
+               <input type="hidden" style="display:none" class="orderGid" value="${item.id}">
+               <td rowspan="2">
+                   수량 :  <input type="text" class="amount" value="1" size="${cnt}" readonly>
+               </td>
+	               <%
+	               String itemPrice = (String) request.getAttribute("price");
+	               String itemCount = (String) request.getAttribute("cnt");
+	
+	    			if (itemPrice != null && itemCount != null) {
+	    				int price1 = Integer.parseInt(itemPrice);
+	   					int cnt1 = Integer.parseInt(itemCount);
+	    				int total1 = price1 * cnt1;
+					%>
+               <td class="aPrice" rowspan="2"><%= total1 %></td>
+               <%} %>
+               </c:if>
                <td rowspan="2" class="delPay">${item.pay}</td>
            </tr>
            <tr>
@@ -84,7 +106,7 @@
                   <th>상품금액</th>
                   <th>배송비</th>
                   <th>할인금액</th>
-                  <th>결제금액</th>
+                  <th>결제 예정금액</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,20 +125,26 @@
               <table>
                 <tr>
                   <td>이름</td>
-                  <td><input class="name" type="text" readonly></td>
+                  <td><input class="name" type="text" value="${userInfo[0].name}" readonly></td>
                 </tr>
                 <tr>
                   <td>이메일</td>
-                  <td><input class="mail" type="text" readonly></td>
+                  <td><input class="mail" type="text" value="${userInfo[0].mail}" readonly></td>
                 </tr>
                 <tr>
                   <td>모바일번호</td>
-                  <td><input class="mobile" type="text" readonly></td>
+                  <td><input class="mobile" type="text" value="${userInfo[0].mobile}" readonly></td>
                 </tr>
-                <tr hidden="">
-                  <td>배송지</td>
-                  <td><input class="adress" type="text" readonly></td>
-                </tr>
+			     <tr hidden="">
+			       <td rowspan="3">배송지 </td>
+			       <td> <input id="zipcode1" value="${userInfo[0].zipcode}"></td>
+			     </tr>
+			     <tr hidden="">
+			       <td><input id="adress1" value="${userInfo[0].adress}"></td>
+			     </tr>
+			     <tr hidden="">
+			       <td><input id="sAdress1" value="${userInfo[0].adress2}"></td>
+			     </tr>
               </table>
             </div>
             <div><!--배송지 정보DIV-->
@@ -127,17 +155,23 @@
                   <td>이름</td>
                   <td><input class="tkname" type="text"></td>
                 </tr>
-                <tr>
-                  <td>배송지</td>
-                  <td><input class="tkadress" type="text"></td>
-                </tr>
+			     <tr>
+			       <td rowspan="3">배송지 </td>
+			       <td> <input type="number" id="zipcode2" readonly>&nbsp;<button id=ADRshow1>주소검색</button></td>
+			     </tr>
+			     <tr>
+			       <td><input type="text" id="adress2" readonly></td>
+			     </tr>
+			     <tr>
+			       <td><input type="text"  id="sAdress2" placeholder="상세주소"></td>
+			     </tr>
                 <tr>
                   <td>연락처</td>
                   <td><input class="tkmobile" type="text"></td>
                 </tr>
                 <tr>
                   <td>배송시 요청사항</td>
-                  <td><input type="text"></td>
+                  <td><input type="text" id="delreq"></td>
                 </tr>
               </table>
             </div>
@@ -161,14 +195,16 @@
           <div><!--주문목록 총정보DIV--><!--주문목록 테이블 DIV-->
             <h2>최종결제금액</h2>
             <table>
-              <tr><td>최종결제금액</td></tr>
-              <tr><td>상품가격</td></tr>
-              <tr><td>배송비</td></tr>
-              <tr><td>할인금액</td></tr>
+              <tr><td colspan=2>최종결제금액</td></tr>
+              <tr><td colspan=2 id="final"></td></tr>
+              <tr><td>상품가격</td><td id="goodsPrice2"></td></tr>
+              <tr><td>배송비</td><td id="delPrice2"></td></tr>
+              <tr><td>할인금액</td><td id="discount2" style="color:red">-0</td></tr>
             </table>
           </div>
           <div>
-            <button>결제하기</button>
+            <button id="btnOrder">결제하기</button>
+        </div>
         </div>
      </main>
 <%} %>  
@@ -184,43 +220,95 @@ $(document)
   $(".sameOrder").change(function() {
     if ($(".sameOrder").is(":checked")) {
       $(".tkname").val($(".name").val())
-      $(".tkadress").val($(".adress").val())
+      $("#zipcode2").val($("#zipcode1").val())
+      $("#adress2").val($("#adress1").val())
+      $("#sAdress2").val($("#sAdress1").val())
       $(".tkmobile").val($(".mobile").val())
     } else {
       $(".tkname").val("")
-      $(".tkadress").val("")
+      $("#zipcode2").val("")
+      $("#adress2").val("")
+      $("#sAdress2").val("")
       $(".tkmobile").val("")
     }
   })
-/*   setingOrder(); */
 
-$('#goodsPrice').text(setingGoodsPrice());
-setingDelPrice();
-$('#finalPrice').text(Number($('#goodsPrice').text()) + Number($('#delPrice').text()) - Number($('#discount').text()))
+$('#goodsPrice, #goodsPrice2').text(setingGoodsPrice());
+	setingDelPrice();
+	$('#finalPrice').text(Number($('#goodsPrice').text()) + Number($('#delPrice').text()) - Number($('#discount').text()))
+	$('#final').text($('#finalPrice').text())
 })
 
-<%-- .on('click','#bgngoOrder',function(){
-	let id = '<%=(String)session.getAttribute("id")%>';
+.on('click','#ADRshow1',function(){
+	ADRshow1();
+})
+
+.on('click','#btnOrder',function(){
+	
+	if($('.tkname').val() === '' || 
+		$('#zipcode2').val() === '' || 
+		$('#adress2').val() === '' || 
+		$('#sAdress2').val() === '' || 
+		$('.tkmobile').val() === '' || 
+		$('input[name="payment"]:checked').length === 0
+	) {
+			alert("빈칸있음 확인부탁"); 
+	}
+	let delPrice = ($("#delPrice").text() == 2500? '1' : '2')
+	
+	let cart_id = [];
+	let goods_id = [];
+	let price = [];
+	let cnt = [];
+	
+    $('.cartId').each(function () {
+        cart_id.push(this.value);
+    })
+    let cart_id_str = cart_id.join(',');
+    
+    $('.orderGoodsId').each(function () {
+        goods_id.push(this.value);
+    })
+    let goods_id_str = goods_id.join(',');
+    
+    $('.amount').each(function () {
+        cnt.push(this.value);
+    })
+    let cnt_str = cnt.join(',');
+    
+    $('.Price').each(function () {
+        price.push($(this).text());
+    })
+    let price_str = price.join(',');
+	
+    console.log("cart_id : " + cart_id_str)
+    console.log("goods_id : " + goods_id_str)
+    console.log("g_id : " + $('.orderGid').val())
+    console.log("cnt : " + cnt_str)
+    console.log("price : " + price_str)
+    console.log("tkname : " + $('.tkname').val())
+    console.log("delzipcode : " + $('#zipcode2').val())
+    console.log("deladress : " + $('#adress2').val())
+    console.log("deladress2 : " + $('#sAdress2').val())
+    console.log("delmobile : " + $('.tkmobile').val())
+    console.log("delreq : " + $('#delreq').val())
+    console.log("dele : " + delPrice)
+    console.log("pament : " + $('input[name=payment]:checked').val())
 	$.ajax({
 		type:'post', url:'/saveOrder',
-		data:{user_id:id, tkname:$('.tkname').val(), tkname:$('.tkadress').val(), tkmobile:$('.tkmobile').val(),
-			  payment :$('input[name=payment]:checked').val(), cnt : }, 
+		data:{cart_id : cart_id_str, g_id : $('.orderGid'), goods_id : goods_id_str, cnt : cnt_str, price : price_str, delname : $('.tkname').val(), delzipcode : $('#zipcode2').val(), deladress : $('#adress2').val(), deladress2 : $('#sAdress2').val(), delmobile : $('.tkmobile').val(), delreq : $('#delreq').val(), delprice : delPrice ,payment : $('input[name=payment]:checked').val()}, 
 		dataType:'text',
 		success:function(data){
 			if(data==1){
-				alert('회원정보수정에 성공하였습니다')
-				$('#name,#birth,#zip_code,#adress,#birth,#zipcode,#mobile,#mail').val('');
-				location.href="/mypage";
+				alert('주문성공')
+				location.href="/orderEnd";
 			} else{
-				alert('회원정보수정에 실패하였습니다')
-				focusOnEmptyInput();
+				alert('주문실패')
 			}
 		}
 	})
-}) --%>
+})
 
-
-    
     function setingOrder(){
 	
     	let id = '<%=(String)session.getAttribute("id")%>';
@@ -258,12 +346,28 @@ $('#finalPrice').text(Number($('#goodsPrice').text()) + Number($('#delPrice').te
         });
         
         if(setingGoodsPrice() > 50000 || setingGoodsPrice() == '0') {
-        	$("#delPrice").text(0);
+        	$("#delPrice, #delPrice2").text(0);
         } else if (sum >= 2500){
-        	$("#delPrice").text(2500);
+        	$("#delPrice, #delPrice2").text(2500);
         } else {
-        	$("#delPrice").text(sum);
+        	$("#delPrice, #delPrice2").text(sum);
         }
+    }
+    
+    function ADRshow1(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                console.log(data);
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var jibunAddr = data.jibunAddress; // 지번 주소 변수
+                $('#zipcode2').val(data.zonecode) // 우편번호 넣는코드
+                if(roadAddr!==''){              
+                   $('#adress2').val(roadAddr) 
+                }else if(jibunAddr!==''){
+                    $('#sAdress2').val(jibunAddr)  //도로명이 없을경우 지번을 넣는다
+                }
+            }
+        }).open();
     }
         
     
