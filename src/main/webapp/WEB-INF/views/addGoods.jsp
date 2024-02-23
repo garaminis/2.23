@@ -5,53 +5,44 @@
 <head>
 <meta charset="UTF-8">
 <title>상품 등록</title>
-<link href="/css/thema.css" rel="stylesheet" type="text/css">
+<link href="/css/admin.css" rel="stylesheet" type="text/css">
 </head>
 <script src='https://code.jquery.com/jquery-latest.js'></script>
 <style>
 </style>
 <body>
   <nav id="nav" >
-      <span id="serchArea" style="padding-left: 150px;width: 20%; ">
-        <button id="doSerch" onclick="location.href='/'" style="width: 70%;">어쩌구</button>
+    <span  style="width:20%; ">
+        <button id="doSerch" onclick="location.href='/'" style="width: 70%;"><img src="/img/logo/Logo3.jpg" style="width:50px;"></button>
     </span>
-    <span id="categoryBar" style="width:80%">
-        <a href="/상점관리" class="categoryMenu">상점관리</a>
+    <span style="width:80%">
         <a href="/admin" class="categoryMenu">상품관리</a>
         <a href="/adminorder" class="categoryMenu">주문관리</a>
         <a href="memberList" class="categoryMenu">고객관리</a>
-        <a href="/계시판관리" class="categoryMenu">계시판관리</a>
-        <a href="/통계분석" class="categoryMenu">통계분석</a>
         <button id="doSerch" onclick="location.href='/'">메인페이지</button>
     </span>
 </nav>
 <input type = hidden name = id id=hiddenid value="">
 <table>
-   <tr><td>카테고리</td><td>
+   <tr><td>카테고리</td><td colspan="2">
       <select style="width: 100%" name=category_name id=category_id>
-           <option name=category id=category value="1">1번 카테</option>
-           <option name=category id=category value="2">2번 카테</option>
-           <option name=category id=category value="3">3번 카테</option>
-           <option name=category id=category value="4">4번 카테</option>
-           <option name=category id=category value="5">5번 카테</option>
-           <option name=category id=category value="6">6번 카테</option>
          </select></td></tr>
-   <tr><td>노출명</td><td><input type=text name=title id=title></td></tr>
-   <tr><td>판매가</td><td><input type=text name=price id=price></td></tr>
+   <tr><td>노출명</td><td colspan="2"><input type=text name=title id=title></td></tr>
+   <tr><td>판매가</td><td colspan="2"><input type=text name=price id=price></td></tr>
    <tr><td>할인</td><td><input type=text name=discnt id=discnt value="0"></td><td><input type=radio name="disradio" class="disradio" value="percent">%<input type=radio name="disradio" class="disradio" value="won">원<input type=radio name="disradio" class="disradio" value="no">할인안함</td></tr>
-   <tr><td>총 판매금액</td><td><input type=text name=totalPrice id=totalPrice readonly></td></tr>
-   <tr><td>재고수량</td><td><input type=number name=stock id=stock></td></tr>
+   <tr><td>총 판매금액</td><td colspan="2"><input type=text name=totalPrice id=totalPrice readonly></td></tr>
+   <tr><td>재고수량</td><td colspan="2"><input type=number name=stock id=stock></td></tr>
    <tr><td>배송방법</td>
    <td><input type="radio" name="delivery" id="delivery_paid" value="1">유료배송</td>
    <td><input type="radio" name="delivery" id="delivery_free" value="2">무료배송</td></tr>
-   <tr><td>이미지등록 1번 메인이미지</td><td><input type="file" name="img1" id=img1 /></td></tr>
-   <tr><td>2번</td><td><input type="file" name="img2" id=img2 /></td></tr>
-   <tr><td>3번</td><td><input type="file" name="img3" id=img3 /></td></tr>
-   <tr><td>4번</td><td><input type="file" name="img4" id=img4 /></td></tr>
-   <tr><td>5번</td><td><input type="file" name="img5" id=img5 /></td></tr>
-   <tr><td>상품설명</td><td><textarea id=content></textarea></td></tr>
-   <tr><td colspan=2> <button id=btnAdd>등록</button></td>
-      <td colspan=2><button id=btnDel>취소</button></td>
+   <tr><td>이미지등록 1번 메인이미지</td><td colspan="2"><input type="file" name="img1" id=img1 /></td></tr>
+   <tr><td>2번</td><td colspan="2"><input type="file" name="img2" id=img2 /></td></tr>
+   <tr><td>3번</td><td colspan="2"><input type="file" name="img3" id=img3 /></td></tr>
+   <tr><td>4번</td><td colspan="2"><input type="file" name="img4" id=img4 /></td></tr>
+   <tr><td>5번</td><td colspan="2"><input type="file" name="img5" id=img5 /></td></tr>
+   <tr><td>상품설명</td ><td colspan="2"><textarea id=content></textarea></td></tr>
+   <tr><td> <button id=btnAdd>등록</button></td>
+      <td colspan="2"><button id=btnDel>취소</button></td>
    </tr>
 </table>
 
@@ -60,6 +51,20 @@
 <script>
 $(document)
 .ready(function(){ //시작하자마자 session안에 goodsid가 들어있으면 상품수정형 없다면 상품추가형
+	$.ajax({
+		type:'post',
+		url:'/getCategoty',
+		data : {},
+		dataType : 'json',
+		success : function(data){
+			for (let i = 0; i < data.length; i++) {
+		        let ob = data[i];
+		        let str = '<option value="' + ob['id'] + '">' + ob['name'] + '</option>';
+		        $('#category_id').append(str);
+		    }
+		}
+	})
+
 <%
 	if(session.getAttribute("goodsid")==null) {
 %>
@@ -106,12 +111,37 @@ $(document)
     }
 })
 .on('click','#btnAdd',function(){ //상품추가버튼을 눌렀을때 hidden안에 id값이있으면 그id를 수정 없으면 새로 상품추가
-	
+	let file1 = $('#img1').val().split("\\")
+	let img1 = 'coffee/' + file1[file1.length - 1];
+
+	if($('#img2').val() != null){
+		let file2 = $('#img2').val().split("\\")
+		let img2 = $('#category_id option:selected').text() + '/' + file2[file2.length - 1];
+	}
+	if($('#img3').val() != null){
+		let file3 = $('#img3').val().split("\\")
+		let img3 = $('#category_id option:selected').text() + '/' + file3[file3.length - 1];
+	}
+	if($('#img4').val() != null){
+		let file4 = $('#img4').val().split("\\")
+		let img4 = $('#category_id option:selected').text() + '/' + file4[file4.length - 1];
+	}
+	if($('#img5').val() != null){
+		let file5 = $('#img5').val().split("\\")
+		let img5 = $('#category_id option:selected').text() + '/' + file5[file5.length - 1];
+	}
 	if($('#hiddenid').val()!=null && $('#hiddenid').val()!=''){
 		$.ajax({
 			type:'post',
 			url:'/update',
-			data : {goods_id:$('#hiddenid').val(),category_id : $('#category_id option:selected').val(), title : $('#title').val(),discnt : $('#discnt').val(), price : $('#price').val(), stock : $('#stock').val(), delivery : $('input[name=delivery]:checked').val(), img : $('#img').val(),content: $('#content').val()},
+			data : {goods_id:$('#hiddenid').val(),
+				category_id : $('#category_id option:selected').val(), 
+				itle : $('#title').val(),discnt : $('#discnt').val(), 
+				price : $('#price').val(), stock : $('#stock').val(), 
+				delivery : $('input[name=delivery]:checked').val(), 
+	            img1 : img1,img2 : img2,
+				img3 : img3,img4 : img4,
+				img5 : img5,content: $('#content').val()},
 			dataType : 'text',
 			success : function(data){
 				$('#hiddenid, #category_id, #title,#totalPrice,#content,#discnt, #price, #stock, #deliver').val('');
@@ -137,13 +167,12 @@ $(document)
 	            discnt: $('#discnt').val(),
 	            stock: $('#stock').val(),
 	            delivery: $('input[name=delivery]:checked').val(),
-	            img: $('#img').val(),
-	            content: $('#content').val()
+	            img1 : img1, content: $('#content').val()
 	        },
 	        dataType: 'text',
 	        success: function (data) {
 	            if (data === '1') {
-	                $('#category_id, #title, #goods, #price, #stock, #deliver, #img, #content').val('');
+	                $('#category_id, #title, #goods, #price, #stock, #deliver, #img1, #content').val('');
 	            } else {
 	                alert('등록 실패');
 	            }
@@ -155,16 +184,16 @@ $(document)
 
 })
 .on('click','#btnDel',function(){
-	$('#hiddenid, #category_id, #title,#totalPrice,#content,#discnt, #price, #stock, #deliver').val('');
+	$('#hiddenid, #category_id, #title,#totalPrice,#content,#discnt, #img1, #price, #stock, #deliver').val('');
 	$('input[id="delivery_paid"]').prop('checked', false)
 	$('input[id="delivery_free"]').prop('checked', false)
 	$('input[class="disradio"]').prop('checked', false)
 })
-.on('change', '#price', function () {
+.on('keyup', '#price', function () {
 	$('#totalPrice').val($('#price').val())
 	discnt()
 })
-.on('change', '#discnt', function () {
+.on('keyup', '#discnt', function () {
 	discnt()
 })
 .on('click','.disradio',function(){

@@ -16,6 +16,8 @@ public interface ShopDAO {
 	ArrayList<MemberDTO> orderData(String userId); //
 	int saveOrder(String a, String b, String c, String d, String e, String f, int g,
 			int h);
+	int getOrderId(String a, String b, String c, String d, String e, String f, int g,
+			int h);
 	int modify(String userId, String name, String birth, String zipcode, String adress, String adress2, String mobile,String mail); // 회원정보수정
 	int myWrite(String title, String writer, String content, int category); // 관리자 글 작성
 	int customerWrite(int memberid, int category,String title, String writer, String content,int answer); //고객 글 작성
@@ -31,5 +33,5 @@ public interface ShopDAO {
 	int commentModify(int comment_id, String content);
 	int commentAnswer(int answer,int id);
 	int modifyDirectQnA(String title, String content, int uniq);
-	int addOrder(int a, int b, int c, int d);
+	int addOrder(int a, int b, int c, int d, int e);
 }

@@ -15,6 +15,14 @@
     margin: 10px;
     display: inline-block;
   }
+    #middle_bottom {
+  display: flex;
+  justify-content: space-around; /* 요소들 사이의 간격을 자동으로 조절합니다. */
+}
+.middleMenu {
+  flex: 1; /* 요소들이 동일한 너비를 가지도록 합니다. */
+  text-align: center; /* 텍스트를 가운데 정렬합니다. */
+}
 </style>
 <body>
 <div id="container">
@@ -26,7 +34,7 @@
   	<%@ include file="include/nav.jsp" %>
   </nav>
 <% if (id == null) { %> 
-		<jsp:forward page="login.jsp" />
+	<jsp:forward page="login.jsp" />
 <%} else {%>
   <main>
     <div class="mainContent">
@@ -36,17 +44,12 @@
           <hr class="middle_top_hr">
         </div>
         <div id="middle_bottom">
-          <div class="middleMenu"><a href="/orderList"><img src="/img/myOrder.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/cart"><img src="/img/cart.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/myQna"><img src="/img/myQnA.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/myUpdate"><img src="/img/myUpdate.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/mypage"><img src="/img/wating.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/myOrderList"><img src="/img/logo/order.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/cart"><img src="/img/logo/cart.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/myAbout"><img src="/img/logo/myQ.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/myUpdate"><img src="/img/logo/myup.jpg" id=""></a></div>
         </div>
       </div>
-
-      <div>
-        여기에는 각종 게시판(jsp)이 따라 붙습니다.jsp코드
-      </div>  
     </div>
   </main>
 <%} %>  

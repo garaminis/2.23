@@ -30,18 +30,75 @@
         scroll-margin-top: 120px;
     }/*버튼누르고 스크롤 내려갔을때 상단의 공백*/
     
-tr,td {
-	border: 1px solid black;
-}
-table {
-	border-collapse:collapse; margin: auto;
-}
+	/* 테이블 셀과 테두리 스타일 */
+	tr, td {
+	    border: 1px solid #ccc;
+	    padding: 10px;
+	    text-align: center;
+	    font-size:20px
+	}
+	
+	/* 테이블 테두리 스타일 및 가운데 정렬 */
+	table {
+	    border-collapse: collapse;
+	    margin: auto;
+	}
+	
+	/* 이미지 상자 */
+	.img-box {
+	    display: inline-block;
+	    vertical-align: top; /* 이미지 상단 정렬 */
+	    margin-right: 20px; /* 오른쪽 여백 추가 */
+	}
+	
+	/* 주문 폼 */
+	.doOrder {
+	    display: inline-block;
+	    vertical-align: top; /* 폼 상단 정렬 */
+	    margin-left: 20px; /* 왼쪽 여백 추가 */
+	    margin-top: 50px; /* 상단 여백 추가 */
+	}
+	
+	/* 장바구니 담기, 주문하기 버튼 */
+	#addCart, #directOrder {
+	    background-color: peru;/* 버튼 배경색 */
+	    color: #ffffff; /* 글자색 */
+	    border: none;
+	    border-radius: 4px;
+	    cursor: pointer;
+	    font-family: 'YeongdeokSea'; /* 글꼴 */
+	}
+	
+	/* 수량 조절 버튼 */
+	.int {
+	    background-color: peru; /* 버튼 배경색 */
+	    color: #ffffff; /* 글자색 */
+	    border: none;
+	    border-radius: 4px;
+	    cursor: pointer;
+	    font-family: 'YeongdeokSea'; /* 글꼴 */
+	    width: 80px;
+	    height: 30px;
+	    font-size: 30px;
+	    margin-top: 5px; /* 상단 여백 */
+	    display: inline-block;
+	}
+	
+	/* 결과 값 가운데 정렬 */
+	#result {
+	    text-align: center;
+	    width: 80px;
+	    height: 30px;
+	    font-size: 30px;
+	    margin-top: 5px; /* 상단 여백 */
+	    display: inline-block;
+	}
     
 </style>
 <body>
  <!-- <div id="scrollbar"style="background-color: white; text-align: center; position: sticky; top: 0px; right: 300px;">
  	93번줄의 div position을 sticky를 34번줄 div밖에서 선언하면 움직이는 사이드바 작동가능함 안에선 불가능  -->
-<div id="container">
+<div id="container" >
   <header id="herder">
    	<%@ include file="include/header.jsp" %>
   </header>
@@ -53,22 +110,22 @@ table {
 
 <c:set var="imgSrc" value="${item.img1}" />
   <main id="main">
-    <div id="mainContent">
-      <div style="margin-top: 20px; text-align: center; ">
+    <div id="mainContent"  style="width:80%; margin: 0 auto;">
+      <div style="margin-top: 20px; text-align: center; display:flex; justify-content: center; height:350px">
         <div class="img-box" style="display: inline-block;">
-          <img class="M_img"style="width: 280px;" src="/img/${itemInfo[0].img1}" alt=""><br>
+          <img class="M_img"style="width: 280px;" src="/img/coffee/${itemInfo[0].img1}" alt=""><br>
           <div>
-            <img class="S_img1" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
-            <img class="S_img2" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
-            <img class="S_img3" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
-            <img class="S_img4" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
-            <img class="S_img5" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/${itemInfo[0].img1}" alt="">
+            <img class="S_img1" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/coffee/${itemInfo[0].img1}" alt="">
+            <img class="S_img2" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/coffee/${itemInfo[0].img2}" alt="">
+            <img class="S_img3" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/coffee/${itemInfo[0].img3}" alt="">
+            <img class="S_img4" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/coffee/${itemInfo[0].img4}" alt="">
+            <img class="S_img5" onmouseover="onIMG();" onmouseout="offIMG();"style="width: 40px;" src="/img/coffee/${itemInfo[0].img5}" alt="">
           </div>
         </div>
         <form method='get' action="/order" id="goOrder">
         <input type="hidden" style="display:none" id="goodsNumber" name="goodsNumber" value="${itemInfo[0].id}">
          <input type="hidden" style="display:none" id="gPrice" name="goodsPrice" value="">
-        <div style="display: inline-block;">
+        <div style="display: inline-block; ">
           <table style="font-size: 30px;display: inline-block;">
             <tr><td colspan="2" class="goodsName">${itemInfo[0].title}</td></tr>
             <tr>
@@ -83,17 +140,18 @@ table {
               <td>수량</td>
               <td>
                 <input type="text" id="result" name="result" readonly value="1" style="text-align: right;width: 80px;height: 30px;font-size: 30px;">
-                <input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+">
-                <input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-">
+                <input type="button" style="width: 40px;height: 30px;" onclick='count("plus")' value="+" class="int">
+                <input type="button" style="width: 40px;height: 30px;" onclick='count("minus")' value="-" class="int">
               </td>
             </tr>
           </table>
         </div>
         </form>
-        <div style="text-align: right;">
-          <input type="button" style="width: 120px;height: 30px;" id="addCart" value="장바구니에담기">
-          <input type="button" style="width: 120px;height: 30px;" id="directOrder" value="주문하기">
-        </div>
+
+      </div>
+      <div style="text-align: right;">
+        <input type="button" style="width: 120px;height: 30px;" id="addCart" value="장바구니에담기">
+        <input type="button" style="width: 120px;height: 30px;" id="directOrder" value="주문하기">
       </div>
       <div id="scrollbar"style="background-color: white; text-align: center; position: sticky; top: 0px; right: 300px;">
         <div>
@@ -103,7 +161,7 @@ table {
           <div style="width: 20%; font-size: 35px; line-height: 120px;display: inline-block;"><a href="#change" class="scroll_bar">교환/반품안내</a></div>
         </div>
       </div>
-      <div id="mainDIS"><!--상품상세설명-->
+      <div id="mainDIS" style="text-align: center;"><!--상품상세설명-->
         ${itemInfo[0].content}
         <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
         <h1 style="text-align: center;">먹태가 고추장에는 어울려</h1>
@@ -138,6 +196,7 @@ table {
         <h1 style="text-align: left;font-style: initial;">QnA</h1>
         <hr style="width:90%">
         <div>
+        
           <table id="tblQna">
             <tr>
               <th>상태</th>
@@ -146,6 +205,10 @@ table {
               <th>작성일</th>
             </tr>
           </table>
+          <form method='post' action="/writeQna">
+          <input type="hidden" style="display:none" name="goods_id" value="${itemInfo[0].id}">
+         	 <button id="writeQna">작성하기</button>
+          </form>
         </div>
       </div>
       <div id="change">
@@ -200,6 +263,12 @@ $(document).on('click', '.btnQna', function() {
 	alert(id);
 	alert($('#goodsNumber').val());
 	alert($('#result').val());
+	console.log(id, typeof id);
+	if(id === "null"){
+		alert("로그인 후 가능합니다..")
+		document.location='/login'
+		return false;
+	}
 	$.ajax({
 		type:'post', url:'/addCart',
 		data:{member_id:id, goods_id:$('#goodsNumber').val(), cnt:$('#result').val()},
@@ -267,14 +336,19 @@ function getReviwe() {
 		dataType:'json',
 		success:function(data){
 			let str = "";
-			for(let i = 0; i < data.length; i++) {
-	            str += '<tr><td colspan="2">' + data[i].rating + '</td></tr>'
-	            + '<tr><td colspan="2">' + data[i].user_id + '/' + data[i].created +'</td></tr>'
-	            + '<tr><td class="Re1" onclick="toglReview(this)" style="cursor: pointer;" colspan="2">' + data[i].content +'</td></tr>'
-	            + '<tr class="Re1" hidden>'
-	            + '  <td>여백</td><td>관리자 답변</td></tr>'
+			if(data.length > 0){
+				for(let i = 0; i < data.length; i++) {
+		            str += '<tr><td colspan="2">' + data[i].rating + '</td></tr>'
+		            + '<tr><td colspan="2">' + data[i].user_id + '/' + data[i].created +'</td></tr>'
+		            + '<tr><td class="Re1" onclick="toglReview(this)" style="cursor: pointer;" colspan="2">' + data[i].title +'</td></tr>'
+		            + '<tr class="Re1" hidden>'
+		            + '  <td>' + data[i].content + '</td></tr>'
+				}
+				$('#tblReview').append(str)
+			} else {
+				str += '<tr><td colspan="2"> 등록된 리뷰가 없습니다. </td></tr>'
+				$('#tblReview').append(str)
 			}
-			$('#tblReview').append(str)
 		}
 	})
 }

@@ -117,7 +117,6 @@
  
 <c:if test="${sessionScope.admin != null }">  
   <button id="btnbModify" >수정하기</button>
-  <button id="btnbClear" >취소하기</button>
   <button id="btnbDelete" >삭제하기</button>
  </c:if>
   

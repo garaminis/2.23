@@ -7,19 +7,9 @@
 <title>내 정보수정</title>
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 <script src='http://code.jquery.com/jquery-latest.js'></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!-- 다음카카오 주소API 스크립트 -->
 </head>
 <style>
-
-h1 {
-    text-align: center;
-} 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
-
 table {
     margin: 20px auto;
     border-collapse: collapse;
@@ -46,23 +36,8 @@ input[type="email"] {
     border-radius: 4px;
     box-sizing: border-box;
 }
-
-button {
-    padding: 10px 10px;
-    background-color: navy;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-#signup:hover {
-    background-color: #004080;
+.btnmyupdate{
+	 width: 100%;
 }
 </style>
 <body>
@@ -90,7 +65,7 @@ button:hover {
 	        <td colspan="2"><input type="date" id="birth"></td>
 		    </tr>
 			  <tr>
-	        <td><input type="number" id="zip_code" placeholder="우편번호"> <br> <td><button> 주소검색</button> </td> 
+	        <td><input type="number" id="zip_code" placeholder="우편번호"> <br> &nbsp;<button id=ADRshow>주소검색</button></td>
   	    </tr>
         <tr>
 	        <td colspan="2"><input type="text" id="adress"  placeholder="기본주소"></td>
@@ -147,6 +122,9 @@ $(document)
 .on('click','#btnclear',function(){
 	location.href="/mypage";
 })
+.on('click','#ADRshow',function(){
+	ADRshow();
+})
 
 function focusOnEmptyInput(){
 	 $('#tblMyUpdate input').each(function() {
@@ -156,6 +134,7 @@ function focusOnEmptyInput(){
 	      }
 	 });
 }
+
 
 
 function setingData(){
@@ -175,6 +154,22 @@ function setingData(){
 				$('#mail').val(data[0].mail);
 		}
 	})
+}
+
+function ADRshow(){
+    new daum.Postcode({
+        oncomplete: function(data) {
+            console.log(data);
+            var roadAddr = data.roadAddress; // 도로명 주소 변수
+            var jibunAddr = data.jibunAddress; // 지번 주소 변수
+            $('#zipcode').val(data.zonecode) // 우편번호 넣는코드
+            if(roadAddr!==''){              
+               $('#adress').val(roadAddr) 
+            }else if(jibunAddr!==''){
+                $('#adress').val(jibunAddr)  //도로명이 없을경우 지번을 넣는다
+            }
+        }
+    }).open();
 }
 
 </script>

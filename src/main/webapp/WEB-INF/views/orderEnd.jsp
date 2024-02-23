@@ -22,8 +22,8 @@
     <div id="mainContent"> 
     각 html바디부분 여기서부터 붙여넣으시면 됩니다.body태그말고요
         <div style="width: 100%; text-align: center; font-size: 40px;">
-        <a href="">홈으로</a>
-        <a href="">주문내역보기</a>
+        <a href="/">홈으로</a>
+        <a href="/myOrderList">주문내역보기</a>
     </div>
 	</div>
   </main>

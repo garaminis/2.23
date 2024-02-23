@@ -9,87 +9,19 @@
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 
 <style>
-	main {
-	  margin: 20px;
-	}
-	
-	.middle_top_title {
-	  font-size: 24px;
-	  color: #333;
-	}
-	
-	.middle_top_hr {
-	  border: 1px solid #333;
-	  margin-bottom: 20px;
-	}
-	
-	.announcement {
-	  margin-bottom: 10px;
-	  padding: 10px;
-	  background-color: #f9f9f9;
-	  border: 1px solid #ccc;
-	}
-	
-	#data_write {
-	  display: none;
-	}
-	
-	button {
-	  padding: 10px 20px;
-	  background-color: #333;
-	  color: white;
-	  border: none;
-	  cursor: pointer;
-	  margin-right: 10px;
-	}
-	
-	button:hover {
-	  background-color: #555;
-	}
-	.announcement label {
-	    display: block;
-	    font-weight: bold;
-	    margin-bottom: 5px;
-	}
-	.announcement input[type="text"],
-	.announcement textarea {
-	    width: 100%;
-	    padding: 10px;
-	    margin-bottom: 15px;
-	    border: 1px solid #ccc;
-	    border-radius: 4px;
-	    box-sizing: border-box;
-	}
-	
-	.announcement textarea {
-	    min-height: 150px;
-	    resize: vertical;
-	}
-	
-	.announcement button {
-	    background-color: black;
-	    color: #fff;
-	    border: none;
-	    border-radius: 4px;
-	    padding: 10px 20px;
-	    cursor: pointer;
-	    font-size: 16px;
-	}
-	
-	.announcement button:hover {
-	    background-color: #0056b3;
-	}
-		.announcement {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.middle_top_hr {
+  margin-bottom: 20px;
 }
 
-/* Adjust spacing between different parts */
-.announcement span {
-  ma
+#data_write{
+  display: none;
+}
+.cid {
+  display: none;
+}
+.announcement { 
+  margin-bottom: 10px;
+}
 </style>
 </head>
 
@@ -103,7 +35,9 @@
   	<%@ include file="include/nav.jsp" %>
 </nav>
   
-
+<% if (id == null) { %> 
+	<jsp:forward page="login.jsp" />
+<%} else {%>
 <main>
  <h1 class="middle_top_title">나의 문의내역</h1>
  <hr class="middle_top_hr">
@@ -157,7 +91,7 @@
 <button id=gowrite>작성하기</button>
 
 </main>
-  
+<%} %>    
 <footer id="footer">
   	<%@ include file="include/footer.jsp" %>
 </footer>   

@@ -11,6 +11,19 @@
 </head>
 <style>
 /* 작은 화면에서는 2개의 열을 가로로 나열 */
+
+.shop-item-image {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.shop-item-image img {
+  width: 100%;
+}
+
 @media (max-width: 767px) {
   .module-small .col-sm-6 {
     width: 50%;
@@ -34,6 +47,17 @@
   clear: both;
 }
 
+#middle_area2 .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 -15px;
+}
+
+#middle_area2 .col-sm-6 {
+    padding: 0 15px;
+    margin-bottom: 20px; /* 각 요소의 아래쪽 여백 추가 */
+}
 </style>
 <body>
 <div id="container">
@@ -57,12 +81,12 @@
         <div class="row" style="width: 100%; margin: 0 auto; padding: 0 15px;">
           <section class="module-small">
             <c:forEach items="${itemList}" var="item">
-              <div class="col-sm-6 col-md-3 col-lg-3 mt-60 mb-40scrolling" item="${item.id}" style="padding-left: 10px; padding-right: 10px;">
+              <div class="col-sm-6 col-md-3 col-lg-3 mt-60 mb-40" item="${item.id}" style="padding-left: 10px; padding-right: 10px;">
                 <div class="shop-item">
                   <a href="/goods?id=${item.id}">
                   <div style="text-align: center; padding: 30px;">
                     <div style="width: 100%; height: 300px; overflow: hidden; display: flex; align-items: center;">
-                      <img style="width: 100%;  " src="/img/${item.img1}" alt="이미지제대로 넣어라"/>
+                      <img style="width: 100%;  "src="/img/coffee/${item.img1}" alt="상품이미지"/>
                     </div>
                     <div>
                       <h4 class="shop-item-title font-alt">${item.title}</h4>
@@ -91,7 +115,7 @@ $(document)
 
 let pageCnt = 0;
 
-$(window).scroll(function(){
+/* $(window).scroll(function(){
 	let currentScrollTop = $(window).scrollTop();
 	let lastScrollTop = 0;
 
@@ -129,7 +153,7 @@ $(window).scroll(function(){
 			}
 		})
 	}
-});
+}); */
 </script>
 
 </html>

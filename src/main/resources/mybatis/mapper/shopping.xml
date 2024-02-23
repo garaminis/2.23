@@ -53,10 +53,10 @@
 </delete>
 <insert id="comment">
 	INSERT into directQnAanswer set directid=#{param1} ,writer=#{param2}, category=#{param3}, Qwriter=#{param4},content=#{param5},created=sysdate() 
-</insert >
+</insert>
 <insert id="commentAnswer">
 	UPDATE directQnA set answer=#{param1} where id=#{param2}
-</insert >
+</insert>
 <select id="directQnAanswer" resultType="com.study.shopping.directQnAanswerDTO">
     SELECT a.id, b.id AS CommentID, b.content
     FROM directQnA a, directQnAanswer b
@@ -72,10 +72,13 @@
 	SELECT name, mail, mobile, adress from member0 where user_id=#{param1}
 </select>
 <insert id="saveOrder">
-	INSERT into ordergroup set delname=#{param1} , delzipcode=#{param2}, deladress=#{param3}, deladress2=#{param4} ,delmobile=#{param5},
+	INSERT into ordergroup set delname=#{param1}, delzipcode=#{param2}, deladress=#{param3}, deladress2=#{param4} ,delmobile=#{param5},
 				delreq=#{param6}, delpay=#{param7}, payment=#{param8}
-</insert >
+</insert>
 <insert id="addOrder">
-	INSERT into order0 set member_id=#{param1}, goods_id=#{param2}, cnt=#{param3}, sales=#{param4}
-</insert >
+	INSERT into order0 set member_id=#{param1}, goods_id=#{param2}, cnt=#{param3}, sales=#{param4}, group_id=#{param5}
+</insert>
+<select id="getOrderId" resultType="_int">
+	SELECT id from ordergroup where delname=#{param1} and delzipcode=#{param2} and deladress=#{param3} and deladress2=#{param4} and delmobile=#{param5} and delreq=#{param6} and delpay=#{param7} and payment=#{param8}
+</select>
 </mapper>

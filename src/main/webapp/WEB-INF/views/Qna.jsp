@@ -9,88 +9,22 @@
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 
 <style>
-	main {
-	  margin: 20px;
-	}
 	
-	.middle_top_title {
-	  font-size: 24px;
-	  color: #333;
-	}
-	
-	.middle_top_hr {
-	  border: 1px solid #333;
-	  margin-bottom: 20px;
-	}
-	
-	.announcement {
-	  margin-bottom: 10px;
-	  padding: 10px;
-	  background-color: #f9f9f9;
-	  border: 1px solid #ccc;
-	}
-	
-	#data_write {
-	  display: none;
-	}
-	
-	button {
-	  padding: 10px 20px;
-	  background-color: #333;
-	  color: white;
-	  border: none;
-	  cursor: pointer;
-	  margin-right: 10px;
-	}
-	
-	button:hover {
-	  background-color: #555;
-	}
-	.announcement label {
-	    display: block;
-	    font-weight: bold;
-	    margin-bottom: 5px;
-	}
-	.announcement input[type="text"],
-	.announcement textarea {
-	    width: 100%;
-	    padding: 10px;
-	    margin-bottom: 15px;
-	    border: 1px solid #ccc;
-	    border-radius: 4px;
-	    box-sizing: border-box;
-	}
-	
-	.announcement textarea {
-	    min-height: 150px;
-	    resize: vertical;
-	}
-	
-	.announcement button {
-	    background-color: black;
-	    color: #fff;
-	    border: none;
-	    border-radius: 4px;
-	    padding: 10px 20px;
-	    cursor: pointer;
-	    font-size: 16px;
-	}
-	
-	.announcement button:hover {
-	    background-color: #0056b3;
-	}
-		.announcement {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.middle_top_hr {
+  margin-bottom: 20px;
 }
 
-/* Adjust spacing between different parts */
-.announcement span {
-  margin-right: 60px; /* Increase the margin for more space */
+#data_write{
+  display: none;
 }
+.cid {
+  display: none;
+}
+
+.announcement { 
+  margin-bottom: 10px;
+}
+
 </style>
 </head>
 
@@ -106,7 +40,7 @@
   
 
 <main>
- <h1 class="middle_top_title">나의 문의내역</h1>
+ <h1 class="middle_top_title">QnA</h1>
  <hr class="middle_top_hr">
 
 <c:forEach items="${directQnAlist}" var="directQnA">
@@ -118,7 +52,7 @@
   </div>
   </div>
 
-  <div class="announcement" id='data_write' style="display: none;"> 
+  <div class="announcement" id='data_write' > 
       <input type="text" id="uniq" value="${directQnA.id}" > 
       <input type="text" id="category" value="${directQnA.category}" style="display: none;" > 
       <label>제목</label><input type="text" id="title" value="${directQnA.title}" >
@@ -127,18 +61,17 @@
 
 
   <% if (admin!=null || id !=null) { %>
-	<input id="comment_id"  >
+	<input id="comment_id"  class="cid">
 	<label>답변</label><textarea id="comment"></textarea>
 	<input type="text" id="Qwriter" value=<%=id%> readonly>
 	<select id="answerstate" required="required">
     <option value="" selected disabled hidden>답변 상태를 선택해주세요.</option>
     </select>
 <% } else if(admin==null) { %> 
-	
-	<input id="comment_id"  >
+	<input id="comment_id" class="cid" >
 	<label>답변</label><textarea id="comment" readonly></textarea>
 <% }  %> 
-
+<br><br>
       <c:if test="${sessionScope.id != null and sessionScope.id==directQnA.writer}">  
           <button id="btnbModify" >수정하기</button>
           <button id="btnbClear" >취소하기</button>
@@ -176,10 +109,6 @@ $(document)
 	let str=$('#writer').val(); 
 	commentLoad();
 })
-/* .on('change', '#answerstate', function() {
-    let selectedValue = $(this).val(); 
-    console.log('선택된 값:', selectedValue);
-}) */
 
 .on('click','#clear',function(){
 	$('#title,#text').val('');
@@ -225,7 +154,7 @@ $(document)
 		success:function(data){
 			if(data==1 || data==2){
 				alert('성공하였습니다')
-				location.href="/Qna";
+				location.href="/myAbout";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -245,7 +174,7 @@ $(document)
 		success:function(data){
 			if(data==1 || data==2){
 				alert('성공하였습니다')
-				location.href="/Qna";
+				location.href="/myAbout";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -266,7 +195,7 @@ $(document)
         success:function(data){     	
         	if(data==1){
 				console.log('성공하였습니다');
-				location.href="/Qna";
+				location.href="/myAbout";
 			}else{
 				console.log('실패하였습니다');
 			}
@@ -283,7 +212,7 @@ $(document)
 		success:function(data){
 			if(data==1){
 				alert('답변성공하였습니다')
-				location.href="/Qna";
+				location.href="/myAbout";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -303,7 +232,7 @@ $(document)
 		success:function(data){
 			if(data==1){
 				alert('성공하였습니다')
-				location.href="/Qna";
+				location.href="/myAbout";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -311,18 +240,6 @@ $(document)
 	}) 
 })
 
-/* function answerstate(){
-	$.ajax({
-		type:'Get', url:'/answerstate', data:{}, dataType:'json',
-		success:function(data){
-			for(let i=0; i<data.length; i++){
-				let ob=data[i];
-				let str='<option value='+ob['id']+'>'+ ob['name'] + '</option>';
-				$('#answerstate').append(str);
-			}
-		}
-	})
-} */
 function commentLoad(clickedElement) {
     var directid = $(clickedElement).next().find('input#uniq').val(); 
     var textareaComment = $(clickedElement).closest('.announcement').next().find('textarea#comment');
@@ -356,11 +273,6 @@ function commentLoad(clickedElement) {
 $('.announcement').click(function() {
     commentLoad(this);
 });
-
-
-
-
-
 
 
 </script>

@@ -8,10 +8,14 @@ import lombok.Data;
 public class GoodsDTO {
 	int id;
 	String userid;
+	int order_id;
+	int state_id;
+	String state_name;
 	int category_id;
 	int category;
 	String title;
 	String name;
+	String date;
 	int price;
 	int stock;
 	int delivery;
@@ -36,4 +40,6 @@ public class GoodsDTO {
 	int g_id;
 	private MultipartFile image;
 	int discnt;
+	int review_id;
+	int group_id;
 }

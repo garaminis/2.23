@@ -1,0 +1,76 @@
+@charset "UTF-8";
+#nav {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 150px;
+}
+
+/* 검색 영역 스타일 */
+#searchArea {
+  width: 20%;
+}
+
+/* 카테고리 메뉴 스타일 */
+#categoryBar {
+  width: 80%;
+  padding: 5px 10px; /* 메뉴 내부 여백 설정 */
+  border-radius: 5px; /* 메뉴 둥글게 만들기 */
+  
+}
+
+.categoryMenu {
+  margin-right: 20px;
+  color: #333;
+  text-decoration: none;
+}
+
+.categoryMenu:hover {
+  color: #555;
+}
+
+/* 버튼 스타일 */
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* 테이블 첫 번째 행 스타일 */
+table tr:first-child {
+  background-color: #f2f2f2;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+td:first-child {
+  width: 15%;
+  text-align: center;
+}
+
+td:last-child {
+  width: 15%;
+  text-align: center;
+}
+
+/* 상품 추가 버튼 스타일 */
+#addGoodsBtn {
+  margin-top: 30px;
+  text-align: right;
+}

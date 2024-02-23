@@ -8,6 +8,7 @@
 <title>장바구니</title>
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 <style>
+
 	* {
 	    margin: 0;
 	    padding: 0;
@@ -16,6 +17,7 @@
 	
 	section {
 	    margin: 20px;
+	    
 	}
 	
 	section > div > ul {
@@ -62,6 +64,30 @@
 	section > div > button:hover {
 	    background-color: black;
 	}
+	button.doOrder {
+	   padding: 13px 30px;
+	   background-color: peru;
+	   color: #ffffff;
+	   border: none;
+	   border-radius: 4px;
+	   cursor: pointer;
+	   font-family: 'YeongdeokSea';
+	   margin-right: 10px;
+	   width: 150px;
+	   font-size:15px;
+	}
+
+	button.doOrder:hover {
+    	background-color: #a58e7f;
+    	width: 150px; 
+	}
+	form button {
+    	margin-top: 10px; /* 버튼 위에 10px의 공간을 추가합니다. */
+	}
+	
+    .click_td {
+        cursor: pointer;
+    }
 	  
 </style>
 
@@ -76,7 +102,9 @@
   <nav id="nav">
   	<%@ include file="include/nav.jsp" %>
   </nav>
-  
+<% if (id == null) { %> 
+	<jsp:forward page="login.jsp" />
+<%} else {%>
  <main>
     <div class="">
       <div id="">
@@ -97,17 +125,20 @@
            </tr>
        </thead>
        <tbody>
+       <c:if test="${empty cartItems}">
+         <tr><td colspan="6">장바구니가 비어있습니다.</td></tr>
+       </c:if>
        <c:forEach var="item" items="${cartItems}" varStatus="status">
            <tr >
                <td rowspan="2"><input type="checkbox" name="cart" class="updateCart" value="${item.cart_id}" checked="on"></td>
-               <td rowspan="2">
-                   <img src="/img/${item.img1}" alt="magic keyboard">
+               <td rowspan="2" class="click_td" onclick="window.location='/goods?id=${item.goods_id}'">
+                   <img src="/img/coffee/${item.img1}" alt="magic keyboard">
                </td>
-               <td>
+               <td class="click_td" onclick="window.location='/goods?id=${item.goods_id}'">
                    <p>${item.title}</p>
                </td>
                <td rowspan="2">
-                   수량 :  <input type="text" class="amount" value="${item.cnt}" size="1">
+                   수량 :  <input type="text" class="amount" value="${item.cnt}" size="1" readonly>
                    <input type="button" class=plus value=" + ">
                    <input type="button" class=minus value=" - ">
                </td>
@@ -115,20 +146,21 @@
                <td rowspan="2" >${item.pay}</td>
            </tr>
            <tr>
-           <td class="Price">${item.price}</td>
+           <td class="Price click_td" onclick="window.location='/goods?id=${item.goods_id}'">${item.price}</td>
            </tr>
            </c:forEach>
+
        </tbody>
      </table>
      <input id="sum" style="border:none">
         <div>
-            <button id=btn_shopping>쇼핑 계속하기</button>
-            <button id=btn_select_delete>선택상품삭제</button>
-            <button id=btn_delete>전체삭제</button>  
+            <button id=btn_shopping class="doOrder">쇼핑 계속하기</button>
+            <button id=btn_select_delete  class="doOrder">선택상품삭제</button>
+            <button id=btn_delete  class="doOrder">전체삭제</button>  
 			<form method='get' action="/order" id="cartToOrder">
 				<input type="hidden" style="display=none;" name="sendOrder" id="sendOrder">
-				<button id=btn_select_order>선택상품주문</button>
-				<button id=btn_order>전체상품주문</button>
+				<button id=btn_select_order  class="doOrder">선택상품주문</button>
+				<button id=btn_order  class="doOrder">전체상품주문</button>
 			</form>
         </div>
     </section>
@@ -136,6 +168,7 @@
 </div>
 </div>
   </main>
+<%} %>  
   <footer id="footer">
   	<%@ include file="include/footer.jsp" %>
   </footer>
@@ -172,6 +205,9 @@ $(document)
 
 .on('click','.minus',function() {    
       let number = $(this).parent().find('input.amount');
+      if($(this).parent().find('input.amount').val()==1){
+          return false;
+       }
       number.val(parseInt(number.val()) - 1);
       let sPrice=$(this).closest('tr').next().find('.Price').text();
       let quantit=number.val();
@@ -235,7 +271,7 @@ $(document)
 	$('#sendOrder').val(checkedStr);
 	alert($('#sendOrder').val());
 	
-	if ($('#sendOrder').val() != null) {//제출
+	if ($('#sendOrder').val() != '') {//제출
 		$('#cartToOrder').submit();
 	} else {
 		alert("주문할 상품을 선택해주세요")

@@ -1,7 +1,5 @@
 package com.study.shopping;
-
 import java.util.ArrayList;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
 @Controller
 public class AdminController {
 	
@@ -25,7 +21,6 @@ public class AdminController {
 	@Autowired
 	private OrderDAO odao;
 	
-
 	   @PostMapping("/goodsAdd") //관리자용 상품추가
 	   @ResponseBody
 	   public String doGoodsAdd(HttpServletRequest req) {
@@ -41,12 +36,19 @@ public class AdminController {
 	      System.out.println(delivery);
 	      String discnt = req.getParameter("discnt");
 	      System.out.println(discnt);
-	      String img = req.getParameter("img");
-	      System.out.println(img);
+	      String img1 = req.getParameter("img1");
+	      System.out.println(img1);
+	      String img2 = req.getParameter("img2");
+	      System.out.println(img2);
+	      String img3 = req.getParameter("img3");
+	      System.out.println(img3);
+	      String img4 = req.getParameter("img4");
+	      System.out.println(img4);
+	      String img5 = req.getParameter("img5");
+	      System.out.println(img5);
 	      String content = req.getParameter("content");
 	      System.out.println(content);
-	      int n = gdao.goodsAdd(Integer.parseInt(category_id), title,Integer.parseInt(price),Integer.parseInt(discnt), Integer.parseInt(stock), img, content, Integer.parseInt(delivery)); //insert
-
+	      int n = gdao.goodsAdd(Integer.parseInt(category_id), title,Integer.parseInt(price),Integer.parseInt(discnt), Integer.parseInt(stock), img1, img2,img3,img4,img5,content, Integer.parseInt(delivery)); //insert
 	   return "" + n;
 	   }
 	   
@@ -70,6 +72,19 @@ public class AdminController {
 		   jo.put("content", gdto.content);
 		   jo.put("discnt",gdto.discnt);
 		   return jo.toJSONString();
+	   }
+	   @PostMapping("/getCategoty") 
+	   @ResponseBody
+	   public String getCategoty() {
+		   ArrayList<GoodsDTO> alGoods = gdao.tkcategory();
+		   JSONArray ja = new JSONArray();
+		    for (int i = 0; i < alGoods.size(); i++) {
+		        JSONObject jo = new JSONObject();
+		        jo.put("id", alGoods.get(i).id);
+		        jo.put("name", alGoods.get(i).name);
+		        ja.add(jo);
+		    }
+		   return ja.toJSONString();
 	   }
 	   @PostMapping("/update") //수정 반 미완성
 	   @ResponseBody
@@ -159,25 +174,28 @@ public class AdminController {
 		@ResponseBody
 		public String getOrderList (HttpServletRequest req) {
 			int stateNum = Integer.parseInt(req.getParameter("stateNum"));
-			ArrayList<OrderDTO> alOrder = odao.list(stateNum);
+			ArrayList<OrderDTO> alOrder = odao.orderlist(stateNum);
 			JSONArray ja = new JSONArray();
 			 for (int i = 0; i < alOrder.size(); i++) {
 				 JSONObject jo = new JSONObject();
 				 jo.put("id", alOrder.get(i).id);
-				 jo.put("user_id", alOrder.get(i).user_id);
-				 jo.put("title", alOrder.get(i).title);
+				 jo.put("order_id", alOrder.get(i).order_id);
+				 jo.put("member_id", alOrder.get(i).member_id);
+				 jo.put("goods_name", alOrder.get(i).goods_name);
 				 jo.put("cnt", alOrder.get(i).cnt);
 				 jo.put("sales", alOrder.get(i).sales);
 				 jo.put("delname", alOrder.get(i).delname);
+				 jo.put("delzipcode", alOrder.get(i).delzipcode);
 				 jo.put("deladress", alOrder.get(i).deladress);
+				 jo.put("deladress2", alOrder.get(i).deladress2);
 				 jo.put("delmobile", alOrder.get(i).delmobile);
 				 jo.put("delreq", alOrder.get(i).delreq);
 				 jo.put("delivery_name", alOrder.get(i).delivery_name);
+				 jo.put("delivery_pay", alOrder.get(i).delivery_pay);
 				 jo.put("payment_name", alOrder.get(i).payment_name);
-				 jo.put("order_state_name", alOrder.get(i).order_state_name);
+				 jo.put("orderstate_name", alOrder.get(i).orderstate_name);
 				 jo.put("created", alOrder.get(i).created);
 				 jo.put("state", alOrder.get(i).state);
-				 System.out.println(alOrder.get(i).state);
 				 ja.add(jo);
 			 }
 			return ja.toJSONString();

@@ -19,11 +19,18 @@ import jakarta.servlet.http.HttpSession;
 public class ShopController {
 	@Autowired
 	private ShopDAO sdao;
+	@Autowired
+	private GoodsDAO gdao;
+	
 	
 	@GetMapping("/")
-	public String home() {
+	public String home(Model model) {
+		ArrayList<GoodsDTO> item = gdao.itemList(2, 0, 16);
+		System.out.println(item);
+	    model.addAttribute("itemList", item);
 		return "home";
 	}
+	
 	@GetMapping("/login")
 	public String login() {
 		return "login";
@@ -60,6 +67,7 @@ public class ShopController {
 		JSONArray ja = new JSONArray();
 		for(int i=0; i < data.size(); i++) {
 			JSONObject jo = new JSONObject();
+			jo.put("id",data.get(i).id);
 			jo.put("name",data.get(i).name);
 			jo.put("birth",data.get(i).birth);
 			jo.put("zipcode",data.get(i).zipcode);

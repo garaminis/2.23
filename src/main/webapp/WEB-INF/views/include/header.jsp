@@ -24,7 +24,7 @@ String admin=(String)session.getAttribute("admin");// session 설정있음
 </div>
 <div id="logo">
   <a href="/">
-    <img src="/img/logo.jpg" id="homeIcon">
+    <img src="/img/logo/logo3.jpg"  id="homeIcon">
   </a>
 </div>
 <div class="space">

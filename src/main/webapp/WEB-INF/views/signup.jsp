@@ -9,58 +9,43 @@
 <script src='http://code.jquery.com/jquery-latest.js'></script>
 </head>
 <style>
-  h1 {
-    text-align: center;
-  } 
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-  }
-  table {
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);  
-  }
-  table tr td {
-    padding: 10px;
-    vertical-align: top;
-  }
-  input[type="text"],
-  input[type="password"],
-  input[type="date"],
-  input[type="number"],
-  input[type="tel"],
-  input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  button {
-    padding: 10px 10px;
-    background-color: navy;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
-  #signup,#cancel {
-    width: 100%;
-  }
-  #signup:hover {
-    background-color: #004080;
-  }
-  #zipcode {
-    width: 70%;
-  }
+  
+	table {
+	  margin: 20px auto;
+	  border-collapse: collapse;
+	  border-radius: 8px;
+	 
+	}
+	table tr td {
+	  padding: 10px;
+	  vertical-align: top;
+	  font-family:
+	}
+	input[type="text"],
+	input[type="password"],
+	input[type="date"],
+	input[type="number"],
+	input[type="tel"],
+	input[type="email"] {
+	  width: 100%;
+	  padding: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  box-sizing: border-box;
+	}
+	button {
+	  padding: 10px 10px;
+	  width:70px;
+	}
+   .tosign {
+   	 width: 100%;
+    }
+	#signup:hover {
+	background-color:peru;
+	}
+	#zipcode {
+	  width: 70%;
+	}
 </style>
 <body>
 <div id="container">
@@ -127,10 +112,10 @@
 	       <td ><input type=radio name=gender value=male>남성 &nbsp; <input type=radio name=gender value=female>여성 </td>
 	     </tr>
 	     <tr>
-	       <td colspan="2"><button id="signup">회원가입</button></td>
+	       <td colspan="2"><button id="signup" class="tosign">회원가입</button></td>
 	     </tr>
 	     <tr>
-	       <td colspan="2"><button id="cancel">취소</button></td>
+	       <td colspan="2"><button id="cancel" class="tosign">취소</button></td>
 	     </tr>
 			</table>
 	  </div>

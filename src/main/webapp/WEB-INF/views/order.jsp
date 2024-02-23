@@ -19,6 +19,43 @@
 	    padding: 10px;
 	    text-align: center;
 	}
+	#mainContent {
+  		 display: flex; 
+	}
+	.sOrder{
+	width: 80%;
+	margin-right: 20px;
+	margin: 100px 20px;
+
+	}
+	.sOrder2 {
+    	float:left;
+    	width: 60%;
+    	height: 100%;
+    	margin-right: 20px;
+    	margin: 20px 20px;
+   }
+   .sOrder3{
+   		float:left;
+    	width: 30%;
+    	height: 100%;
+    	margin-right: 20px;
+    	margin: 20px 20px;	
+   }
+   .sOrder2_d{
+   		margin: 20px 20px;
+   }
+   
+   #zipcode2{
+   		 width: 108px;
+   }
+   #ADRshow1{
+   		padding: 10px 10px;
+	 	width:70px;
+   }
+   .sPayment{
+   		 margin-top: 15px;
+   }
 }</style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script><!-- 다음카카오 주소API 스크립트 -->
@@ -43,8 +80,8 @@
           <h1 class="middle_top_title">주문/결제</h1>
           <hr class="middle_top_hr">
         </div>
-        <div style="width: 80%; margin: 0 auto;"> <!--총 정보를 감싼 DIV-->
-          <div style="float:left; width: 100%;height: 100%;">
+        <div class='sOrder'> <!--총 정보를 감싼 DIV-->
+          <div>
           <h2>1. 주문상품 정보</h2>
      <table>
        <thead>
@@ -62,7 +99,7 @@
         <input type="hidden" style="display:none" class="cartId" value="${item.cart_id}">
            <tr >
                <td rowspan="2">
-                   <img src="/img/${item.img1}" alt="magic keyboard" style="width:75px;">
+                   <img src="/img/coffee/${item.img1}" alt="상품이미지" style="width:75px;">
                </td>
                <td>
                    <p>${item.title}</p>
@@ -120,8 +157,8 @@
               </tbody>
             </table>
           </div>
-          <div style="float:left; width: 60%;height: 100%;"> <!--구매자 정보,배송지 정보,결제정보 DIV-->
-            <div><!--구매자 정보DIV-->
+          <div class='sOrder2'> <!--구매자 정보,배송지 정보,결제정보 DIV-->
+            <div class='sOrder2_d'><!--구매자 정보DIV-->
               <h2>2. 구매자 정보</h2>
               <table>
                 <tr>
@@ -148,7 +185,7 @@
 			     </tr>
               </table>
             </div>
-            <div><!--배송지 정보DIV-->
+            <div class='sOrder2_d'><!--배송지 정보DIV-->
               <h2>3. 배송지 정보</h2>
               <h3><input type="checkbox" class="sameOrder">주문자와 동일</h3>
               <table>
@@ -158,7 +195,7 @@
                 </tr>
 			     <tr>
 			       <td rowspan="3">배송지 </td>
-			       <td> <input type="number" id="zipcode2" readonly>&nbsp;<button id=ADRshow1>주소검색</button></td>
+			       <td> <input type="number" id="zipcode2" readonly>&nbsp<button id=ADRshow1>주소검색</button></td>
 			     </tr>
 			     <tr>
 			       <td><input type="text" id="adress2" readonly></td>
@@ -176,7 +213,7 @@
                 </tr>
               </table>
             </div>
-            <div><!--결제 정보 DIV-->
+            <div class='sOrder_d'><!--결제 정보 DIV-->
               <h2>4. 결제정보</h2>
               <table>
                 <tr>
@@ -192,7 +229,7 @@
               </table>
             </div>
           </div>
-          <div style="float:right; width: 30%;height: 100%; position : relative;">
+          <div class='sOrder3'>
           <div><!--주문목록 총정보DIV--><!--주문목록 테이블 DIV-->
             <h2>최종결제금액</h2>
             <table>
@@ -203,7 +240,7 @@
               <tr><td>할인금액</td><td id="discount2" style="color:red">-0</td></tr>
             </table>
           </div>
-          <div>
+          <div class='sPayment'>
             <button id="btnOrder">결제하기</button>
         </div>
         </div>

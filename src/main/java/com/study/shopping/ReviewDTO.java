@@ -15,6 +15,7 @@ public class ReviewDTO {
 	String qusdate;
 	String answer;
 	String ansdate;
+	String title;
 	int state;
 	int member_id;
 }

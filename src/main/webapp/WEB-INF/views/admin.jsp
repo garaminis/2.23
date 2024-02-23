@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="/css/thema.css" rel="stylesheet" type="text/css">
+<link href="/css/admin.css" rel="stylesheet" type="text/css">
 </head>
 <style>
 </style>
@@ -16,12 +16,9 @@
         <button id="doSerch" onclick="location.href='/'" style="width: 70%;">어쩌구</button>
     </span>
     <span id="categoryBar" style="width:80%">
-        <a href="/상점관리" class="categoryMenu">상점관리</a>
         <a href="/admin" class="categoryMenu">상품관리</a>
         <a href="/adminorder" class="categoryMenu">주문관리</a>
         <a href="memberList" class="categoryMenu">고객관리</a>
-        <a href="/계시판관리" class="categoryMenu">계시판관리</a>
-        <a href="/통계분석" class="categoryMenu">통계분석</a>
         <button id="doSerch" onclick="location.href='/'">메인페이지</button>
     </span>
 </nav>
@@ -93,7 +90,7 @@ function getGoodsList(){ //테이블가져오는 함수
 				let disprice = price*(1 - discnt / 100)
 				let to10 = Math.round(disprice / 10) * 10;
 				let str = '<tr><td>'+ob['id']+'</td><td>'+ob['category']+'</td><td>'+
-				'<img style="width:120px" src="'+ob['img1']+'">'+
+				'<img style="width:120px" src="/img/coffee/'+ob['img1']+'">'+
 				'</td><td>'+ob['title']+'</td><td>'+ob['price']+'</td><td>'+ob['discnt']+'%'+'</td><td>'+
 				to10+'</td><td>'+ob['stock']+'</td><td>'+ob['delpay']+'</td><td>'+'<button class="siuu" value="'+ob['id']+'">수정</button>/'+
 				'<button class="sack" value="'+ob['id']+'">삭제</button>'+'</td></tr>'

@@ -31,13 +31,22 @@ public class ItemControlle {
 
 	@GetMapping("/itemView")
 	public String itemView(@RequestParam("id") String id,Model model) {
-		System.out.println(id);
+		System.out.println(id.length());
 		int pageStart = 0;
 		int pageEnd = 16;
-		ArrayList<GoodsDTO> item = gdao.itemList(Integer.parseInt(id), pageStart, pageEnd);
-		System.out.println(item);
-	    model.addAttribute("itemList", item);
-	    return "/itemView";
+		
+		if(id.length() == 1) {
+			ArrayList<GoodsDTO> item = gdao.itemList(Integer.parseInt(id), pageStart, pageEnd);
+			System.out.println(item);
+		    model.addAttribute("itemList", item);
+		    return "/itemView";
+		} else {
+			String search = (String) id;
+			ArrayList<GoodsDTO> result = gdao.search(search);
+			model.addAttribute("itemList", result);
+			return "/itemView";
+		}
+
 	}
 	  
 	@GetMapping("/goods")
@@ -54,22 +63,83 @@ public class ItemControlle {
 		return "announ";
 	}
 	
-	@GetMapping("/tkorder")
-	public String getTKOrder(HttpServletRequest req,Model model) {
-		//goods.jps에서 받은 이미지 상품제목 갯수 가격받아오기
-		String img = req.getParameter("img");
-		model.addAttribute("img",img);
-		String goodsName = req.getParameter("goodsName");
-		model.addAttribute("goodsName",goodsName);
-		String goodsSend = req.getParameter("goodsSend");
-		model.addAttribute("goodsSend",goodsSend);
-		int result = Integer.parseInt(req.getParameter("result"));
-		model.addAttribute("result",result);
-		int goodsPrice = result*Integer.parseInt(req.getParameter("goodsPrice").trim());
-		model.addAttribute("goodsPrice",goodsPrice);
-			
-		return "/order";
+	@PostMapping("/writeReview")
+	public String writeReview(HttpServletRequest req,Model model) {
+		String order_id = req.getParameter("order_id");
+		String goods_id = req.getParameter("goods_id");
+		model.addAttribute("order_id", order_id);
+		model.addAttribute("goods_id", goods_id);
+		return "writeReview";
 	}
+	
+
+	
+	@PostMapping("/addReview")
+	@ResponseBody
+	public String addReview(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		String id = (String) session.getAttribute("id");
+		int member_id = gdao.getIdNum(id);
+		
+		String order_id = req.getParameter("order_id");
+		String goods_id = req.getParameter("goods_id");
+		String title = req.getParameter("title");
+		String content = req.getParameter("content");
+		String rating = req.getParameter("rating");
+		
+		int n = rdao.addReview(member_id, Integer.parseInt(goods_id), title, content, Integer.parseInt(rating));
+		
+		int review_id = rdao.getReviewId(member_id, Integer.parseInt(goods_id), title, content, Integer.parseInt(rating));
+		System.out.println(review_id);
+		int m = gdao.addReviewId(review_id,Integer.parseInt(order_id));
+		
+		return "" + n;
+	}
+	
+	@PostMapping("/writeQna")
+	public String writeQna(HttpServletRequest req,Model model) {
+		String goods_id = req.getParameter("goods_id");
+		model.addAttribute("goods_id", goods_id);
+		return "writeQna";
+	}
+	
+	@PostMapping("/addQna")
+	@ResponseBody
+	public String addQna(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		String id = (String) session.getAttribute("id");
+		int member_id = gdao.getIdNum(id);
+		
+		String goods_id = req.getParameter("goods_id");
+		String content = req.getParameter("content");
+		
+		int n = rdao.addQna(member_id, Integer.parseInt(goods_id), content, id);
+
+		return "" + n;
+	}
+	
+	@GetMapping("/serch")
+	public String doSerch(HttpServletRequest req) {
+		String goods_id = req.getParameter("serch");
+		return "/serchList";
+	}
+	
+//	@GetMapping("/tkorder")
+//	public String getTKOrder(HttpServletRequest req,Model model) {
+//		//goods.jps에서 받은 이미지 상품제목 갯수 가격받아오기
+//		String img = req.getParameter("img");
+//		model.addAttribute("img",img);
+//		String goodsName = req.getParameter("goodsName");
+//		model.addAttribute("goodsName",goodsName);
+//		String goodsSend = req.getParameter("goodsSend");
+//		model.addAttribute("goodsSend",goodsSend);
+//		int result = Integer.parseInt(req.getParameter("result"));
+//		model.addAttribute("result",result);
+//		int goodsPrice = result*Integer.parseInt(req.getParameter("goodsPrice").trim());
+//		model.addAttribute("goodsPrice",goodsPrice);
+//			
+//		return "/order";
+//	}
 	
 	@GetMapping("/order")
 	public String getOrder(HttpServletRequest req,Model model) {
@@ -141,21 +211,6 @@ public class ItemControlle {
 		System.out.println("cart_id_str = " + cart_id_str);
 		
 //		String[] cart_id = cart_id_str.split(",");
-		if(g_id.equals("0")) { // 장바구니에서 온거
-			String[] goods_id = goods_id_str.split(",");
-			String[] cnt = cnt_str.split(",");
-			String[] price = price_str.split(",");
-			String[] cart_id = cart_id_str.split(",");
-			
-			for(int i = 0; i < goods_id.length; i++) {
-				int a = sdao.addOrder(member_id,Integer.parseInt(goods_id[i]),Integer.parseInt(cnt[i]),Integer.parseInt(price[i]));
-			}
-			for(int i = 0; i < cart_id.length; i++) {
-				int b = gdao.delCart(Integer.parseInt(cart_id[i]));
-			}
-		} else {
-			int c = sdao.addOrder(member_id,Integer.parseInt(g_id),Integer.parseInt(cnt_str),Integer.parseInt(price_str));
-		}
 
 		String delname = req.getParameter("delname");
 		String delzipcode = req.getParameter("delzipcode");
@@ -176,6 +231,25 @@ public class ItemControlle {
 		System.out.println("payment = " + payment);
 		
 		int n = sdao.saveOrder(delname,delzipcode,deladress,deladress2,delmobile,delreq,Integer.parseInt(delprice),Integer.parseInt(payment));
+		System.out.println(n);
+		int orderId = sdao.getOrderId(delname,delzipcode,deladress,deladress2,delmobile,delreq,Integer.parseInt(delprice),Integer.parseInt(payment));
+		System.out.println(orderId);
+		
+		if(g_id.equals("0")) { // 장바구니에서 온거
+			String[] goods_id = goods_id_str.split(",");
+			String[] cnt = cnt_str.split(",");
+			String[] price = price_str.split(",");
+			String[] cart_id = cart_id_str.split(",");
+			
+			for(int i = 0; i < goods_id.length; i++) {
+				int a = sdao.addOrder(member_id,Integer.parseInt(goods_id[i]),Integer.parseInt(cnt[i]),Integer.parseInt(price[i]),orderId);
+			}
+			for(int i = 0; i < cart_id.length; i++) {
+				int b = gdao.delCart(Integer.parseInt(cart_id[i]));
+			}
+		} else {
+			int c = sdao.addOrder(member_id,Integer.parseInt(g_id),Integer.parseInt(cnt_str),Integer.parseInt(price_str),orderId);
+		}
 		
 		return "" + n;
 	}
@@ -278,6 +352,7 @@ public class ItemControlle {
 			jo.put("rating",review.get(i).rating);
 			jo.put("user_id",review.get(i).user_id);
 			jo.put("created",review.get(i).created);
+			jo.put("title",review.get(i).title);
 			jo.put("content",review.get(i).content);
 			ja.add(jo);
 	}
@@ -338,6 +413,31 @@ public class ItemControlle {
 		System.out.println("qwriter : " + qwriter);
 		int n = rdao.qnaSave(qwriter, Integer.parseInt(member_id), Integer.parseInt(id), Integer.parseInt(qna_id), content);
 		int n2 = rdao.qnaUpdate(Integer.parseInt(qna_id));
+		return "" + n;
+	}
+	
+	@GetMapping("/myOrderList")
+	public String getOrderList(HttpServletRequest req,Model model) {
+		HttpSession session = req.getSession();
+			    
+		String id = (String) session.getAttribute("id");
+		int member_id = gdao.getIdNum(id);
+		
+		if (id != null) {
+			ArrayList<GoodsDTO> orderItem = gdao.getOrderList(member_id);
+			model.addAttribute("orderItems", orderItem);
+			System.out.println(orderItem);
+			return "myOrderList";
+		}
+		return "myOrderList";
+	}
+	
+	@PostMapping("/stateUpdate")
+	@ResponseBody
+	public String setState(HttpServletRequest req) {
+		String order_id = req.getParameter("order_id");
+		System.out.println(order_id);
+		int n = gdao.updateState(Integer.parseInt(order_id));
 		return "" + n;
 	}
 

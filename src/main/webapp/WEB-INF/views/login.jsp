@@ -9,53 +9,28 @@
 </head>
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 50px;
-}
 
 table {
     margin: 0 auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-}
+    border-collapse: colapse;
+} 
 
 table tr td {
     padding: 10px;
+    font-family: 'YeongdeokSea';
 }
 
-input[type="text"],
-input[type="password"] {
+
+input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #ddb48e;
+    border-radius: 5px;
     box-sizing: border-box;
 }
-
-button {
-    padding: 13px 30px; /* Increased button size */
-    background-color: rgb(39, 39, 151); /* Changed button color to navy */
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
+button{
+ 	  width: 100%;
 }
-
-button:hover {
-    background-color: #305be7;
-}
-
 #signup {
     margin-top: 10px; /* Add space between login and signup buttons */
 }

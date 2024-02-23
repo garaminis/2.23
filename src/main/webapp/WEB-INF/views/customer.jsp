@@ -16,6 +16,14 @@
     margin: 10px;
     display: inline-block;
   }
+    #middle_bottom {
+  display: flex;
+  justify-content: space-around; /* 요소들 사이의 간격을 자동으로 조절합니다. */
+}
+.middleMenu {
+  flex: 1; /* 요소들이 동일한 너비를 가지도록 합니다. */
+  text-align: center; /* 텍스트를 가운데 정렬합니다. */
+}
 </style>
 
 <body>
@@ -36,21 +44,12 @@
           <hr class="middle_top_hr">
         </div>
         <div id="middle_bottom">
-          <div class="middleMenu"><a href="/notice"><img src="/img/notice.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/Qna"><img src="/img/QnA.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/faq"><img src="/img/FAQ.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/myAbout"><img src="/img/myQnA.jpg" id=""></a></div>
-          <div class="middleMenu"><a href="/customer"><img src="/img/wating.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/notice"><img src="/img/logo/notice.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/Qna"><img src="/img/logo/qna.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/faq"><img src="/img/logo/faq.jpg" id=""></a></div>
+          <div class="middleMenu"><a href="/myAbout"><img src="/img/logo/myq.jpg" id=""></a></div>
         </div>
       </div>
-
-    
-      <div>
-        여기에는 각종 게시판(jsp)이 따라 붙습니다.jsp코드
-      </div>
-   
-   
-    
 	</div>
  
  
