@@ -1,4 +1,14 @@
 @charset "UTF-8";
+body {
+  text-align: center;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 0 auto; 
+}
+
 #nav {
   display: flex;
   justify-content: space-between;
@@ -16,6 +26,14 @@
   padding: 5px 10px; /* 메뉴 내부 여백 설정 */
   border-radius: 5px; /* 메뉴 둥글게 만들기 */
   
+}
+table {
+  width: 100%;
+  table-layout: auto; /* 콘텐츠 크기에 맞게 셀의 너비를 자동 조절합니다. */
+}
+
+table td, table th {
+  word-wrap: break-word; /* 긴 텍스트가 셀을 벗어나지 않도록 줄 바꿈합니다. */
 }
 
 .categoryMenu {
@@ -73,4 +91,9 @@ td:last-child {
 #addGoodsBtn {
   margin-top: 30px;
   text-align: right;
+}
+#nav {
+  background-color: #f2f2f2;
+  overflow: hidden;
+  margin-bottom: 20px;
 }

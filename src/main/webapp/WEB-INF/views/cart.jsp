@@ -9,6 +9,7 @@
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 <style>
 
+	
 	* {
 	    margin: 0;
 	    padding: 0;
@@ -84,11 +85,6 @@
 	form button {
     	margin-top: 10px; /* 버튼 위에 10px의 공간을 추가합니다. */
 	}
-	
-    .click_td {
-        cursor: pointer;
-    }
-	  
 </style>
 
 </head>

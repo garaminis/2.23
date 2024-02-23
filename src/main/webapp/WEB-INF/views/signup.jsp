@@ -185,7 +185,7 @@ function singup(){
 		data:{userId:$('#userId').val(),psw:$('#password').val(),name:$('#userName').val(),mobile:$('#mobile').val(),
 		  		mail:$('#mail').val(),birth:$('#birth').val(),
 			 	  adress:$('#adress').val(),zipcode:$('#zipcode').val(),gender:$('input[name=gender]:checked').val(),
-			 	  sAdress:$('#ADR_SangSoo').val()}, 
+			 	  adress2:$('#ADR_SangSoo').val()}, 
 		dataType:'text',
 		success:function(data){
 			 if(data == 1){

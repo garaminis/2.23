@@ -9,13 +9,42 @@
 </head>
 <script src='https://code.jquery.com/jquery-latest.js'></script>
 <style>
+
+
+/* 테이블 */
+
+table td, table th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  table-layout: auto;
+   word-wrap: break-word;
+}
+#doSerch {
+  float: right;
+}
+
+/* 입력 필드 */
+input[type=text], input[type=number], select, textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* 이미지 입력 */
+input[type=file] {
+  margin-top: 8px;
+}
+
+
 </style>
 <body>
   <nav id="nav" >
-    <span  style="width:20%; ">
-        <button id="doSerch" onclick="location.href='/'" style="width: 70%;"><img src="/img/logo/Logo3.jpg" style="width:50px;"></button>
-    </span>
-    <span style="width:80%">
+    <span style="width:80%" class='addG'>
         <a href="/admin" class="categoryMenu">상품관리</a>
         <a href="/adminorder" class="categoryMenu">주문관리</a>
         <a href="memberList" class="categoryMenu">고객관리</a>

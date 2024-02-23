@@ -13,24 +13,16 @@
 
   <nav id="nav" >
       <span id="serchArea" style="padding-left: 150px;width: 20%; ">
-        <button id="doSerch" onclick="location.href='/'" style="width: 70%;">어쩌구</button>
+         <button id="doSerch" onclick="location.href='/'">메인페이지</button>
     </span>
     <span id="categoryBar" style="width:80%">
         <a href="/admin" class="categoryMenu">상품관리</a>
         <a href="/adminorder" class="categoryMenu">주문관리</a>
         <a href="memberList" class="categoryMenu">고객관리</a>
-        <button id="doSerch" onclick="location.href='/'">메인페이지</button>
+        <button onclick="location.href='/addGoods' ">상품추가</button>
     </span>
 </nav>
-<div style="height: 140px;">
-<table style="height: 100%; width: 100%; ">
-    <tr >
-        <td style="width: 15%; text-align: center;">상품관리</td>
-        <td>여기는 비워주는곳</td>
-        <td style="width: 15%; vertical-align: bottom;text-align: right;"><button onclick="location.href='/addGoods' ">상품추가</button></td>
-    </tr>
-</table>
-<div>
+
 <div style="text-align: right">
 </div>
 <div style="">

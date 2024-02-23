@@ -39,6 +39,7 @@ input[type="email"] {
 .btnmyupdate{
 	 width: 100%;
 }
+
 </style>
 <body>
 <div id="container">
@@ -65,7 +66,7 @@ input[type="email"] {
 	        <td colspan="2"><input type="date" id="birth"></td>
 		    </tr>
 			  <tr>
-	        <td><input type="number" id="zip_code" placeholder="우편번호"> <br> &nbsp;<button id=ADRshow>주소검색</button></td>
+	        <td><input type="number" id="zip_code" placeholder="우편번호"> <br><td><button id=ADRshow>주소검색</button></td>
   	    </tr>
         <tr>
 	        <td colspan="2"><input type="text" id="adress"  placeholder="기본주소"></td>
@@ -80,10 +81,10 @@ input[type="email"] {
 			    <td colspan="2"><input type="email" id="mail" placeholder="이메일"></td>
 			  </tr>
 			  <tr>
-			    <td colspan="2"><button id="btnupdate">수정완료</button></td>
+			    <td colspan="2"><button id="btnupdate"  class='btnmyupdate'>수정완료</button></td>
 			  </tr>
 	      <tr>
-		      <td colspan="2"><button id="btnclear" >취소</button></td>
+		      <td colspan="2"><button id="btnclear"  class='btnmyupdate' >취소</button></td>
 			  </tr>
 			</table>
 		</div>

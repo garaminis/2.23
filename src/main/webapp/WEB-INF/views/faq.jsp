@@ -113,7 +113,7 @@ $(document)
 		success:function(data){
 			if(data==1){
 				alert('성공하였습니다')
-				location.href="/Fna";
+				location.href="/fnq";
 			} else{
 				alert('실패하였습니다')
 			}
@@ -131,7 +131,7 @@ $(document)
 		success:function(data){
 			if(data==1){
 				alert('성공하였습니다')
-				location.href="/Fna";
+				location.href="/fnq";
 			} else{
 				alert('실패하였습니다')
 			}

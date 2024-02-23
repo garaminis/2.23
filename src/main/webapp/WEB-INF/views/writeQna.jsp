@@ -8,12 +8,7 @@
 <link href="/css/theme.css" rel="stylesheet" type="text/css">
 </head>
 <style>
-	body {
-	    font-family: Arial, sans-serif;
-	    background-color: #f4f4f4;
-	    margin: 0;
-	    padding: 0;
-	}
+	
 	
 	.layout {
 	    width: 80%;
@@ -46,19 +41,6 @@
 	    resize: vertical;
 	}
 	
-	.layout button {
-	    background-color: black;
-	    color: #fff;
-	    border: none;
-	    border-radius: 4px;
-	    padding: 10px 20px;
-	    cursor: pointer;
-	    font-size: 16px;
-	}
-	
-	.layout button:hover {
-	    background-color: #0056b3;
-	}
 	
 	.layout select {
 	    width: 100%;

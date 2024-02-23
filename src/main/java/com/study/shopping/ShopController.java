@@ -138,21 +138,25 @@ public class ShopController {
 	}
 	
 	@PostMapping("/dologin") //로그인
-	@ResponseBody
-	public String doLogin(HttpServletRequest req) {
-		String id=req.getParameter("loginId");
-		String psw=req.getParameter("passwd");
-		HttpSession sess= req.getSession(); ////세션 객체를 얻고(꺼내고)  sess변수에 저장
-		int ad= sdao.adlogin(id,psw);
-		if(ad==0) {
-			int n=sdao.dologin(id, psw);
-			sess.setAttribute("id",id);
-			return ""+n;	
-		}
-		sess.setAttribute("id",id);
-		sess.setAttribute("admin",id);
-		return "2";	
-	}
+	   @ResponseBody
+	   public String doLogin(HttpServletRequest req) {
+	       String id = req.getParameter("loginId");
+	       String psw = req.getParameter("passwd");
+	       HttpSession sess = req.getSession(); // 세션 객체를 얻고(꺼내고) sess변수에 저장
+	       int ad = sdao.adlogin(id, psw);
+	       int isMember = sdao.idchk(id); // 회원 여부 확인
+	       if (ad == 0 && isMember == 1) { // 관리자가 아니고 회원으로 등록된 경우에만 로그인 처리
+	           int n = sdao.dologin(id, psw);
+	           sess.setAttribute("id", id);
+	           return "" + n;
+	       } else if (ad == 0 && isMember == 0) { // 회원으로 등록되지 않은 경우
+	           return "-1"; // 회원으로 등록되지 않았음을 클라이언트에게 알림
+	       }
+	       sess.setAttribute("id", id);
+	       sess.setAttribute("admin", id);
+	       return "2";
+	   }
+
 	
 	@PostMapping("/logout") //로그아웃
 	@ResponseBody

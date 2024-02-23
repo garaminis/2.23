@@ -60,7 +60,7 @@
 
 
   <% if (admin!=null || id !=null) { %>
-	<input id="comment_id"  >
+	<input id="comment_id"  class="cid">
 	<label>답변</label><textarea id="comment"></textarea>
 	<input type="text" id="Qwriter" value=<%=id%> readonly>
 	<select id="answerstate" required="required">
@@ -68,7 +68,7 @@
     </select>
 <% } else if(admin==null) { %> 
 	
-	<input id="comment_id"  >
+	<input id="comment_id"  class="cid">
 	<label>답변</label><textarea id="comment" readonly></textarea>
 <% }  %> 
 
